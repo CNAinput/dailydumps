@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 69.92,
+      "close": 64.86,
+      "change_pct": -7.24
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 201.64,
+      "close": 203.3,
+      "change_pct": 0.82
+    }
+  ],
+  "biggest_riser": {
+    "code": "ACSLB",
+    "asset_type": "asset",
+    "name": "Benfica",
+    "open": 2.38,
+    "close": 2.62,
+    "change_pct": 10.08
+  },
+  "biggest_faller": {
+    "code": "NEWTE",
+    "asset_type": "company",
+    "name": "NovaTecnologia,S.A.",
+    "open": 12.53,
+    "close": 11.45,
+    "change_pct": -8.62
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

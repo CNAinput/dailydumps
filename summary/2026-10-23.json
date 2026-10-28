@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-23",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 73.16,
+      "close": 74.36,
+      "change_pct": 1.64
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 203.5,
+      "close": 199.88,
+      "change_pct": -1.78
+    }
+  ],
+  "biggest_riser": {
+    "code": "2020T",
+    "asset_type": "company",
+    "name": "2020investimentos",
+    "open": 9.8,
+    "close": 10.48,
+    "change_pct": 6.94
+  },
+  "biggest_faller": {
+    "code": "P&PEP",
+    "asset_type": "company",
+    "name": "Padrões&Pobres,E.P.",
+    "open": 13.08,
+    "close": 11.26,
+    "change_pct": -13.91
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

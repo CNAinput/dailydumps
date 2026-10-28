@@ -1,0 +1,36 @@
+name: Dado errado
+description: Comunicar um valor incorreto ou em falta nos ficheiros de dados.
+title: "Dado errado: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Os ficheiros de dias passados são imutáveis: não se corrigem por pull request. Esta issue serve para o dono decidir se o dia deve ser regenerado (o que fica registado no manifesto) ou se o erro vem da base de dados de origem.
+  - type: input
+    id: date
+    attributes:
+      label: Data do dia afetado
+      description: Formato AAAA-MM-DD, em dia civil de Lisboa.
+      placeholder: "2026-10-26"
+    validations:
+      required: true
+  - type: input
+    id: file
+    attributes:
+      label: Ficheiro afetado
+      placeholder: prices/2026/2026-10-26.csv
+    validations:
+      required: true
+  - type: textarea
+    id: found
+    attributes:
+      label: O que está errado
+      description: Indica a linha, o instrumento e o valor encontrado.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Valor esperado e como o confirmaste
+    validations:
+      required: true

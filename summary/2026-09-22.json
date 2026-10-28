@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-22",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 76.74,
+      "close": 78.29,
+      "change_pct": 2.02
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 161.88,
+      "close": 165.49,
+      "change_pct": 2.23
+    }
+  ],
+  "biggest_riser": {
+    "code": "NEWTE",
+    "asset_type": "company",
+    "name": "NovaTecnologia,S.A.",
+    "open": 13.67,
+    "close": 14.76,
+    "change_pct": 7.97
+  },
+  "biggest_faller": {
+    "code": "ACHIP",
+    "asset_type": "company",
+    "name": "AtivosDoChip,S.A.",
+    "open": 7.53,
+    "close": 7.07,
+    "change_pct": -6.11
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-01",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 70.88,
+      "close": 71.17,
+      "change_pct": 0.41
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 229.59,
+      "close": 241.2,
+      "change_pct": 5.06
+    }
+  ],
+  "biggest_riser": {
+    "code": "P&PEP",
+    "asset_type": "company",
+    "name": "Padrões&Pobres,E.P.",
+    "open": 16.12,
+    "close": 18.23,
+    "change_pct": 13.09
+  },
+  "biggest_faller": {
+    "code": "ACFFC",
+    "asset_type": "asset",
+    "name": "FIFA/EAFC",
+    "open": 1.25,
+    "close": 1.19,
+    "change_pct": -4.8
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

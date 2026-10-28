@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 76.64,
+      "close": 77.33,
+      "change_pct": 0.9
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 241.66,
+      "close": 231.51,
+      "change_pct": -4.2
+    }
+  ],
+  "biggest_riser": {
+    "code": "ACHIP",
+    "asset_type": "company",
+    "name": "AtivosDoChip,S.A.",
+    "open": 4.3,
+    "close": 4.74,
+    "change_pct": 10.23
+  },
+  "biggest_faller": {
+    "code": "ACFCP",
+    "asset_type": "asset",
+    "name": "Porto",
+    "open": 5.07,
+    "close": 4.75,
+    "change_pct": -6.31
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

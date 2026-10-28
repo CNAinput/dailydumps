@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-22",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 76.2,
+      "close": 73.16,
+      "change_pct": -3.99
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 225.44,
+      "close": 203.5,
+      "change_pct": -9.73
+    }
+  ],
+  "biggest_riser": {
+    "code": "STMEP",
+    "asset_type": "company",
+    "name": "SurvivalTM,E.P.",
+    "open": 2.03,
+    "close": 2.05,
+    "change_pct": 0.99
+  },
+  "biggest_faller": {
+    "code": "ACFCP",
+    "asset_type": "asset",
+    "name": "Porto",
+    "open": 2.62,
+    "close": 2.25,
+    "change_pct": -14.12
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

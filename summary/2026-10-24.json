@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 74.36,
+      "close": 69.72,
+      "change_pct": -6.24
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 199.88,
+      "close": 209.76,
+      "change_pct": 4.94
+    }
+  ],
+  "biggest_riser": {
+    "code": "P&PNV",
+    "asset_type": "asset",
+    "name": "P&P-ClasseNãoVotante",
+    "open": 1.31,
+    "close": 1.41,
+    "change_pct": 7.63
+  },
+  "biggest_faller": {
+    "code": "ACFCP",
+    "asset_type": "asset",
+    "name": "Porto",
+    "open": 2.01,
+    "close": 1.72,
+    "change_pct": -14.43
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

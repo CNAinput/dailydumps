@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-24",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 79.36,
+      "close": 82.69,
+      "change_pct": 4.2
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 226.44,
+      "close": 238.66,
+      "change_pct": 5.4
+    }
+  ],
+  "biggest_riser": {
+    "code": "2020T",
+    "asset_type": "company",
+    "name": "2020investimentos",
+    "open": 8.85,
+    "close": 10.23,
+    "change_pct": 15.59
+  },
+  "biggest_faller": {
+    "code": "STMEP",
+    "asset_type": "company",
+    "name": "SurvivalTM,E.P.",
+    "open": 3.64,
+    "close": 3.27,
+    "change_pct": -10.16
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-23",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 78.33,
+      "close": 78.55,
+      "change_pct": 0.28
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 166.26,
+      "close": 226.59,
+      "change_pct": 36.29
+    }
+  ],
+  "biggest_riser": {
+    "code": "2020T",
+    "asset_type": "company",
+    "name": "2020investimentos",
+    "open": 7.57,
+    "close": 8.77,
+    "change_pct": 15.85
+  },
+  "biggest_faller": {
+    "code": "CREFA",
+    "asset_type": "company",
+    "name": "CréditoFácil",
+    "open": 5.32,
+    "close": 4.89,
+    "change_pct": -8.08
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

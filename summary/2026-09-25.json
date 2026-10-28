@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-25",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 82.69,
+      "close": 81.27,
+      "change_pct": -1.72
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 240.35,
+      "close": 224.6,
+      "change_pct": -6.55
+    }
+  ],
+  "biggest_riser": {
+    "code": "ACLPB",
+    "asset_type": "asset",
+    "name": "LigaPortugal",
+    "open": 0.83,
+    "close": 0.86,
+    "change_pct": 3.61
+  },
+  "biggest_faller": {
+    "code": "P&PNV",
+    "asset_type": "asset",
+    "name": "P&P-ClasseNãoVotante",
+    "open": 1.76,
+    "close": 1.55,
+    "change_pct": -11.93
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

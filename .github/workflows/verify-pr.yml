@@ -1,0 +1,40 @@
+# Verificação dos pull requests. As actions estão fixadas por tag de versão e podem passar a SHA de commit.
+name: verify-pr
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Código
+        uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Python
+        uses: actions/setup-python@v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Testes
+        run: python -m unittest discover -s tests -t .
+
+      - name: Verificar a integridade e as somas de controlo
+        run: |
+          python -m cnadump verify
+          if [ -f SHA256SUMS ]; then sha256sum -c SHA256SUMS > /dev/null; fi
+
+      - name: Garantir que nenhum ficheiro de dias passados foi alterado
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: git diff --name-only "origin/${BASE_REF}...HEAD" | python -m cnadump guard

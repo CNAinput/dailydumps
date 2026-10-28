@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-20",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 74.1,
+      "close": 73.78,
+      "change_pct": -0.43
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 264.72,
+      "close": 235.92,
+      "change_pct": -10.88
+    }
+  ],
+  "biggest_riser": {
+    "code": "ACSCP",
+    "asset_type": "asset",
+    "name": "Sporting",
+    "open": 3.59,
+    "close": 3.8,
+    "change_pct": 5.85
+  },
+  "biggest_faller": {
+    "code": "P&PNV",
+    "asset_type": "asset",
+    "name": "P&P-ClasseNãoVotante",
+    "open": 1.83,
+    "close": 1.56,
+    "change_pct": -14.75
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

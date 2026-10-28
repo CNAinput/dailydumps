@@ -1,0 +1,119 @@
+# Arquivo diário dos dados do mercado.
+# As actions estão fixadas por tag de versão. Para maior rigor podem passar a SHA de commit.
+name: dump
+
+on:
+  schedule:
+    # Primeira tentativa por volta das 23:15 de Lisboa e repetições até às 10:30.
+    # Cobre o horário de verão (UTC+1) e o de inverno (UTC+0). O script decide pelo relógio de Lisboa
+    # e termina sem alterações quando não há nada a fazer.
+    - cron: "17 22,23,1,4,7,9 * * *"
+  workflow_dispatch:
+    inputs:
+      backfill_from:
+        description: "Data inicial AAAA-MM-DD para gerar dias passados sem snapshots. Vazio para a execução normal."
+        required: false
+        default: ""
+      force_date:
+        description: "Data AAAA-MM-DD de um dia já arquivado a regenerar. A substituição fica registada no manifesto."
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: dump
+  cancel-in-progress: false
+
+env:
+  SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+  SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+  HEALTHCHECK_URL: ${{ secrets.HEALTHCHECK_URL }}
+  GH_TOKEN: ${{ github.token }}
+  PYTHONUTF8: "1"
+
+jobs:
+  dump:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Código
+        uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Python
+        uses: actions/setup-python@v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Testes
+        run: python -m unittest discover -s tests -t .
+
+      - name: Gerar os dados
+        env:
+          BACKFILL_FROM: ${{ inputs.backfill_from }}
+          FORCE_DATE: ${{ inputs.force_date }}
+        run: |
+          if [ -n "$FORCE_DATE" ]; then
+            python -m cnadump regenerate "$FORCE_DATE"
+          elif [ -n "$BACKFILL_FROM" ]; then
+            python -m cnadump backfill "$BACKFILL_FROM"
+          else
+            python -m cnadump day
+          fi
+
+      - name: Ajustar as séries aos eventos
+        run: python -m cnadump adjust
+
+      - name: Verificar a integridade
+        run: python -m cnadump verify
+
+      - name: Guardar as alterações
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Sem alterações para guardar."
+          else
+            git commit -m "Dados: $(jq -r .last_date status.json)"
+            git pull --rebase origin "$GITHUB_REF_NAME"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Abrir issues para eventos por registar
+        run: python -m cnadump pending open
+
+      - name: Gerar a API estática
+        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        run: python -m cnadump build-pages _site
+
+      - name: Carregar a API estática
+        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-pages-artifact@v5.0.0
+        with:
+          path: _site
+
+      - name: Publicar no GitHub Pages
+        id: deployment
+        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        uses: actions/deploy-pages@v5.0.1
+
+      - name: Ping de sucesso
+        if: success()
+        run: python -m cnadump ping ok
+
+      - name: Ping de falha
+        if: failure()
+        run: python -m cnadump ping fail

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-26",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 70.1,
+      "close": 69.92,
+      "change_pct": -0.26
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 212.58,
+      "close": 201.64,
+      "change_pct": -5.15
+    }
+  ],
+  "biggest_riser": {
+    "code": "ACHIP",
+    "asset_type": "company",
+    "name": "AtivosDoChip,S.A.",
+    "open": 5.06,
+    "close": 5.49,
+    "change_pct": 8.5
+  },
+  "biggest_faller": {
+    "code": "ACFFC",
+    "asset_type": "asset",
+    "name": "FIFA/EAFC",
+    "open": 0.53,
+    "close": 0.48,
+    "change_pct": -9.43
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

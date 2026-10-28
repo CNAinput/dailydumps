@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-06",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 75.66,
+      "close": 76.19,
+      "change_pct": 0.7
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 239.35,
+      "close": 242.04,
+      "change_pct": 1.12
+    }
+  ],
+  "biggest_riser": {
+    "code": "P&PNV",
+    "asset_type": "asset",
+    "name": "P&P-ClasseNãoVotante",
+    "open": 1.66,
+    "close": 1.84,
+    "change_pct": 10.84
+  },
+  "biggest_faller": {
+    "code": "ACHIP",
+    "asset_type": "company",
+    "name": "AtivosDoChip,S.A.",
+    "open": 5.2,
+    "close": 4.52,
+    "change_pct": -13.08
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

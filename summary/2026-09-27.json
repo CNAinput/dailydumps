@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-27",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 78.11,
+      "close": 74.02,
+      "change_pct": -5.24
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 219.98,
+      "close": 216.37,
+      "change_pct": -1.64
+    }
+  ],
+  "biggest_riser": {
+    "code": "ACLPB",
+    "asset_type": "asset",
+    "name": "LigaPortugal",
+    "open": 0.81,
+    "close": 0.86,
+    "change_pct": 6.17
+  },
+  "biggest_faller": {
+    "code": "CREFA",
+    "asset_type": "company",
+    "name": "CréditoFácil",
+    "open": 4.4,
+    "close": 3.91,
+    "change_pct": -11.14
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

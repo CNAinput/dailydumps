@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-16",
+  "market_cap_available": false,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 67.54,
+      "close": 69.1,
+      "change_pct": 2.31
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 292.85,
+      "close": 280.97,
+      "change_pct": -4.06
+    }
+  ],
+  "biggest_riser": {
+    "code": "NEWTE",
+    "asset_type": "company",
+    "name": "NovaTecnologia,S.A.",
+    "open": 11.23,
+    "close": 12.37,
+    "change_pct": 10.15
+  },
+  "biggest_faller": {
+    "code": "2020T",
+    "asset_type": "company",
+    "name": "2020investimentos",
+    "open": 11.51,
+    "close": 10.59,
+    "change_pct": -7.99
+  },
+  "calm_day": false,
+  "top_market_cap": null,
+  "total_market_cap": null,
+  "companies_count": null
+}

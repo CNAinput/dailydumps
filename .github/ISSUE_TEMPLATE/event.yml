@@ -1,0 +1,63 @@
+name: Evento estrutural
+description: Pedir o registo de um IPO, split, emissão ou retirada de cotação no events.csv.
+title: "Evento: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Os eventos registam-se no ficheiro `events.csv` por pull request. Esta issue serve para combinar os dados antes de abrir o pull request. A data é o dia civil de Lisboa em que a alteração foi aplicada na base de dados.
+  - type: input
+    id: date
+    attributes:
+      label: Data do evento
+      placeholder: "2026-10-13"
+    validations:
+      required: true
+  - type: input
+    id: code
+    attributes:
+      label: Código do instrumento
+      placeholder: ACHIP
+    validations:
+      required: true
+  - type: dropdown
+    id: asset_type
+    attributes:
+      label: Tipo
+      options:
+        - company
+        - asset
+    validations:
+      required: true
+  - type: dropdown
+    id: event
+    attributes:
+      label: Evento
+      options:
+        - ipo
+        - split
+        - issuance
+        - delisting
+    validations:
+      required: true
+  - type: input
+    id: factor
+    attributes:
+      label: Factor do split
+      description: Só nos splits. As shares ficam multiplicadas pelo factor e o preço dividido por ele.
+      placeholder: "4"
+  - type: input
+    id: shares
+    attributes:
+      label: Shares antes e depois
+      description: Valores de shares_total, se os souberes.
+      placeholder: "15000 e 125000"
+  - type: input
+    id: document_id
+    attributes:
+      label: Identificador do despacho
+      description: O id do documento no portal, se existir.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notas
