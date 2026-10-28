@@ -1,0 +1,7 @@
+date,code,asset_type,event,factor,shares_before,shares_after,document_id,notes
+2026-08-24,NEWTE,company,split,4,8000,32000,69,Split 4 para 1. Preço de 79.89 para 19.97.
+2026-09-14,P&PNV,asset,split,5,50000,250000,76,Split 1 para 5. Preço de 12.73 para 2.55.
+2026-10-11,P&PNV,asset,issuance,,250000,750000,83,Emissão de 500000 shares com o preço mantido em 1.56. Despacho de 2026-10-08.
+2026-10-11,NEWTE,company,issuance,,32000,75000,84,Aumento de capital de 43000 shares antes do split. Preço mantido em 60.74.
+2026-10-11,NEWTE,company,split,4,75000,300000,84,Split líquido 1 para 4. No mesmo dia a base de dados passou por 3 para 1 e depois por 4/3. Preço de 60.74 para 15.19.
+2026-10-13,ACHIP,company,issuance,,15000,125000,86,Emissão de 110000 shares com o preço mantido em 3.45.

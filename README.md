@@ -1,5 +1,8 @@
 # Arquivo de dados do mercado da CNA
 
+[![dump](https://github.com/CNAinput/dailydumps/actions/workflows/dump.yml/badge.svg)](https://github.com/CNAinput/dailydumps/actions/workflows/dump.yml)
+[![último dia arquivado](https://img.shields.io/endpoint?url=https%3A%2F%2Fcnainput.github.io%2Fdailydumps%2Fbadge.json)](https://cnainput.github.io/dailydumps/latest.json)
+
 Arquivo público e permanente dos dados diários do mercado de ações da economia virtual da CNA, uma comunidade de Discord em português. Os valores estão em coins (¢), uma moeda fictícia.
 
 O bot da CNA só guarda 40 dias de histórico de preços e apaga o resto. Este repositório copia todos os dias esses preços, e outros dados que já são públicos, para ficarem permanentes e abertos à comunidade.
@@ -43,7 +46,7 @@ with open("daily/ohlc.csv", encoding="utf-8", newline="") as ficheiro:
 
 Para confirmar que nada foi alterado: `sha256sum -c SHA256SUMS`.
 
-Também há uma API estática no GitHub Pages do repositório: `latest.json` (último dia e resumo), `dates.json`, `instruments.json`, `instruments/{slug}.json` (série diária, série ajustada e eventos de cada instrumento) e `badge.json`.
+Também há uma API estática em <https://cnainput.github.io/dailydumps/>: [`latest.json`](https://cnainput.github.io/dailydumps/latest.json) (último dia e resumo), [`dates.json`](https://cnainput.github.io/dailydumps/dates.json), [`instruments.json`](https://cnainput.github.io/dailydumps/instruments.json), `instruments/{slug}.json` (série diária, série ajustada e eventos de cada instrumento) e [`badge.json`](https://cnainput.github.io/dailydumps/badge.json).
 
 ### O que convém saber
 
@@ -55,7 +58,7 @@ Também há uma API estática no GitHub Pages do repositório: `latest.json` (ú
 
 ## Contribuir
 
-- **Dado errado**: abre uma issue com o modelo "Dado errado". Os ficheiros de dias passados não se corrigem por pull request.
+- **Dado errado**: [abre uma issue](https://github.com/CNAinput/dailydumps/issues/new/choose) com o modelo "Dado errado". Os ficheiros de dias passados não se corrigem por pull request.
 - **Evento estrutural** (IPO, split, emissão, retirada de cotação): acrescenta uma linha ao `events.csv` num pull request. Quando o workflow deteta uma alteração por registar abre uma issue com as linhas sugeridas. O guia está em [docs/OPERATIONS.md](docs/OPERATIONS.md).
 - Os pull requests só podem alterar o `events.csv`, a documentação, o código e os testes. O workflow `verify-pr` falha se tocarem em ficheiros de dias passados.
 
@@ -73,3 +76,5 @@ Mais detalhes, o funcionamento do workflow e o que o dono tem de configurar est�
 ## Licenças
 
 O código tem licença MIT ([LICENSE](LICENSE)) e os dados têm licença CC BY 4.0 ([LICENSE-DATA.md](LICENSE-DATA.md)).
+
+Mantido pelo Instituto de Plataformas e Utilidades Tecnológicas da CNA (organização [CNAinput](https://github.com/CNAinput)).
