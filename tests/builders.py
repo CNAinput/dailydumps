@@ -154,6 +154,23 @@ class PipelineCase(unittest.TestCase):
         }
 
 
+WEB_STUB = {
+    "index.html": "<!doctype html>\n<title>Site</title>\n",
+    "css/site.css": "body { margin: 0; }\n",
+    "js/main.js": "export {};\n",
+}
+
+
+def write_web(root, extra=None):
+    """Escreve um site mínimo em `root/web` e devolve os caminhos relativos escritos."""
+    files = {**WEB_STUB, **(extra or {})}
+    for rel, text in files.items():
+        path = Path(root) / "web" / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(text.encode("utf-8"))
+    return sorted(files)
+
+
 NOW = lisbon_now(D27, 23, 17)
 
 

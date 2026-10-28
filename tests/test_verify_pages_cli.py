@@ -14,7 +14,7 @@ from cnadump.pages import build_pages
 from cnadump.pipeline import RunResult
 from cnadump.store import Repo
 from cnadump.verify import protected_changes, verify_repo
-from tests.builders import D26, NOW, StandardWorldCase, lisbon_now, local
+from tests.builders import D26, NOW, StandardWorldCase, lisbon_now, local, write_web
 
 HEADER = "date,code,asset_type,event,factor,shares_before,shares_after,document_id,notes\n"
 ENV = {"SUPABASE_URL": "https://exemplo.supabase.co", "SUPABASE_ANON_KEY": "chave"}
@@ -147,24 +147,110 @@ class GuardTests(unittest.TestCase):
 
 
 class PagesTests(ArchivedCase):
-    def build(self, now=NOW):
+    def setUp(self):
+        super().setUp()
+        write_web(self.root)
+
+    def build(self, now=NOW, **kwargs):
         out = self.root / "_site"
-        return out, build_pages(self.repo, out, now)
+        return out, build_pages(self.repo, out, now, **kwargs)
 
     def test_ficheiros_gerados(self):
         out, written = self.build()
-        for rel in ("latest.json", "dates.json", "instruments.json", "badge.json", "index.html",
+        for rel in ("latest.json", "dates.json", "instruments.json", "badge.json", "api.html", "index.html",
                     "instruments/p-and-p10.json", "instruments/newte.json"):
             self.assertIn(rel, written)
             self.assertTrue((out / rel).is_file(), rel)
 
-    def test_pagina_inicial_liga_ao_repositorio_so_com_um_nome_valido(self):
+    def test_o_site_vem_de_web(self):
+        out, written = self.build()
+        for rel in ("index.html", "css/site.css", "js/main.js"):
+            self.assertIn(rel, written)
+            self.assertEqual((out / rel).read_bytes(), (self.root / "web" / rel).read_bytes(), rel)
+
+    def test_dados_copiados_com_o_caminho_do_repositorio(self):
+        (self.root / "events.csv").write_text(
+            HEADER + "2026-08-24,NEWTE,company,split,4,8000,32000,69,teste\n", encoding="utf-8"
+        )
+        out, written = self.build()
+        for rel in ("daily/ohlc.csv", "daily/ohlc_adjusted.csv", "events.csv", "manifest.json", "status.json",
+                    "SHA256SUMS", "dividends.json", "taxes.json", "summary/2026-10-25.json", "summary/2026-10-27.json",
+                    "snapshots/2026-10-27.json"):
+            self.assertIn(rel, written, rel)
+            self.assertEqual((out / rel).read_bytes(), (self.root / rel).read_bytes(), rel)
+
+    def test_o_events_csv_e_opcional(self):
+        out, written = self.build()
+        self.assertFalse((self.root / "events.csv").exists())
+        self.assertNotIn("events.csv", written)
+
+    def test_os_ticks_nao_vao_para_o_site(self):
+        out, written = self.build()
+        self.assertFalse((out / "prices").exists())
+        self.assertEqual([rel for rel in written if rel.startswith("prices/")], [])
+
+    def test_so_os_dias_com_snapshot_levam_snapshot(self):
+        out, _ = self.build()
+        self.assertEqual(sorted(p.name for p in (out / "snapshots").iterdir()), ["2026-10-27.json"])
+
+    def test_instruments_json_continua_a_ser_o_da_api(self):
+        out, _ = self.build()
+        site = json.loads((out / "instruments.json").read_text(encoding="utf-8"))
+        self.assertEqual(set(site["instruments"][0]), {"code", "asset_type", "name", "slug"})
+        self.assertNotEqual((out / "instruments.json").read_bytes(), (self.root / "instruments.json").read_bytes())
+
+    def test_a_api_nao_depende_do_site(self):
+        out, _ = self.build()
+        api = ("latest.json", "dates.json", "instruments.json", "badge.json", "instruments/newte.json")
+        before = {rel: (out / rel).read_bytes() for rel in api}
+        write_web(self.root, {"js/outro.js": "export const x = 1;\n", "index.html": "<!doctype html>\n<title>B</title>\n"})
+        out, _ = self.build()
+        self.assertEqual({rel: (out / rel).read_bytes() for rel in api}, before)
+
+    def test_o_site_nao_pode_ocupar_enderecos_da_api_nem_dos_dados(self):
+        for rel in ("latest.json", "dates.json", "badge.json", "api.html", "instruments.json", "instruments/x.json",
+                    "daily/ohlc.csv", "events.csv", "SHA256SUMS", "manifest.json", "summary/a.json", "snapshots/a.json",
+                    "prices/a.csv"):
+            with self.subTest(rel):
+                write_web(self.root, {rel: "x\n"})
+                with self.assertRaises(ValidationError) as caught:
+                    self.build()
+                self.assertIn("web/" + rel, "\n".join(caught.exception.messages))
+                (self.root / "web" / rel).unlink()
+
+    def test_sem_index_html_e_um_erro(self):
+        (self.root / "web/index.html").unlink()
+        with self.assertRaises(ValidationError) as caught:
+            self.build()
+        self.assertIn("web/index.html em falta", str(caught.exception))
+        self.assertFalse((self.root / "_site").exists())
+
+    def test_ficheiros_ocultos_nao_vao_para_o_site(self):
+        write_web(self.root, {".DS_Store": "x\n", "js/__pycache__/x.pyc": "x\n", ".git/config": "x\n"})
+        _, written = self.build()
+        self.assertEqual([rel for rel in written if ".DS_Store" in rel or "__pycache__" in rel or ".git" in rel], [])
+
+    def test_pasta_web_alternativa(self):
+        write_web(self.root / "alternativa", {"index.html": "<!doctype html>\n<title>Outro</title>\n"})
+        out, _ = self.build(web=self.root / "alternativa" / "web")
+        self.assertIn("Outro", (out / "index.html").read_text(encoding="utf-8"))
+
+    def test_gerar_duas_vezes_da_o_mesmo(self):
+        out, first = self.build()
+        before = {rel: (out / rel).read_bytes() for rel in first}
+        _, second = self.build()
+        self.assertEqual(first, second)
+        self.assertEqual({rel: (out / rel).read_bytes() for rel in second}, before)
+
+    def test_pagina_da_api_liga_ao_repositorio_so_com_um_nome_valido(self):
         out = self.root / "_site"
         build_pages(self.repo, out, NOW, "CNAinput/dailydumps")
-        self.assertIn('<a href="https://github.com/CNAinput/dailydumps">', (out / "index.html").read_text(encoding="utf-8"))
+        html = (out / "api.html").read_text(encoding="utf-8")
+        self.assertIn('<a href="https://github.com/CNAinput/dailydumps">', html)
+        self.assertIn('<a href="index.html">', html)
         for invalido in (None, "", "sem-barra", 'x/"><script>', "a/b/c"):
             build_pages(self.repo, out, NOW, invalido)
-            html = (out / "index.html").read_text(encoding="utf-8")
+            html = (out / "api.html").read_text(encoding="utf-8")
             self.assertNotIn("github.com", html, invalido)
             self.assertNotIn("@@", html, invalido)
 
@@ -204,6 +290,7 @@ class PagesTests(ArchivedCase):
     def test_sem_registo_de_instrumentos_usa_so_o_ohlc(self):
         shutil.rmtree(self.root)
         self.root.mkdir()
+        write_web(self.root)
         self.generator(NOW).run_backfill()
         self.assertFalse((self.root / "instruments.json").exists())
         out, written = self.build()
@@ -366,12 +453,22 @@ class CliTests(StandardWorldCase):
         code, out = self.run_cli("adjust")
         self.assertEqual(code, 0)
         self.assertIn("já está atualizado", out)
+        write_web(self.root)
         code, out = self.run_cli("build-pages")
         self.assertEqual(code, 0)
+        self.assertIn("Site e API estática gerados", out)
         self.assertTrue((self.root / "_site/latest.json").is_file())
+        self.assertTrue((self.root / "_site/index.html").is_file())
         code, out = self.run_cli("build-pages", environ=dict(ENV, GITHUB_REPOSITORY="CNAinput/dailydumps"))
         self.assertEqual(code, 0)
-        self.assertIn("github.com/CNAinput/dailydumps", (self.root / "_site/index.html").read_text(encoding="utf-8"))
+        self.assertIn("github.com/CNAinput/dailydumps", (self.root / "_site/api.html").read_text(encoding="utf-8"))
+
+    def test_build_pages_sem_site_devolve_2(self):
+        self.run_cli("day")
+        code, out = self.run_cli("build-pages")
+        self.assertEqual(code, 2)
+        self.assertIn("web/index.html em falta", out)
+        self.assertFalse((self.root / "_site").exists())
 
     def test_relogio_pode_vir_do_ambiente(self):
         environ = dict(ENV, CNADUMP_NOW="2026-10-26T23:30:00+00:00")

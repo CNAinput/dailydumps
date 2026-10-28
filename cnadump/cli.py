@@ -66,7 +66,7 @@ def build_parser():
     sub.add_parser("verify", help="Verifica a integridade do repositório.")
     pending = sub.add_parser("pending", help="Mostra os eventos estruturais por registar.")
     pending.add_argument("action", nargs="?", choices=["open"], help="open: abre as issues com o gh.")
-    pages = sub.add_parser("build-pages", help="Gera a API estática do GitHub Pages.")
+    pages = sub.add_parser("build-pages", help="Gera o site (web/) e a API estática do GitHub Pages.")
     pages.add_argument("folder", nargs="?", default="_site", help="Pasta de saída (por omissão _site).")
     sub.add_parser("guard", help="Lê caminhos do stdin e falha se algum só puder ser escrito pelo workflow.")
     ping_cmd = sub.add_parser("ping", help="Envia o ping ao Healthchecks.io, se HEALTHCHECK_URL estiver definido.")
@@ -153,7 +153,7 @@ def cmd_build_pages(args, ctx):
     folder = Path(args.folder)
     target = folder if folder.is_absolute() else ctx.root / folder
     written = build_pages(ctx.repo, target, ctx.now, ctx.environ.get("GITHUB_REPOSITORY"))
-    ctx.out(f"API estática gerada ({len(written)} ficheiros).")
+    ctx.out(f"Site e API estática gerados ({len(written)} ficheiros).")
     return 0
 
 

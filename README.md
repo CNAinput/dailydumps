@@ -7,6 +7,8 @@ Arquivo público e permanente dos dados diários do mercado de ações da econom
 
 O bot da CNA só guarda 40 dias de histórico de preços e apaga o resto. Este repositório copia todos os dias esses preços, e outros dados que já são públicos, para ficarem permanentes e abertos à comunidade.
 
+O site <https://cnainput.github.io/dailydumps/> deixa ver e pesquisar tudo o que está no arquivo: dias, instrumentos, ticks, eventos, capitalização, dividendos, impostos e ficheiros.
+
 ## O que contém
 
 | Caminho | Conteúdo |
@@ -20,6 +22,7 @@ O bot da CNA só guarda 40 dias de histórico de preços e apaga o resto. Este r
 | `dividends.json`, `taxes.json` | política de dividendos e impostos em vigor |
 | `events.csv` | IPO, splits, emissões e retiradas de cotação, registados à mão |
 | `manifest.json`, `SHA256SUMS`, `status.json` | integridade e estado do arquivo |
+| `web/` | o código do site: HTML, CSS e JavaScript puros |
 
 Os formatos e as regras de cada ficheiro estão em [docs/SCHEMA.md](docs/SCHEMA.md).
 
@@ -46,7 +49,7 @@ with open("daily/ohlc.csv", encoding="utf-8", newline="") as ficheiro:
 
 Para confirmar que nada foi alterado: `sha256sum -c SHA256SUMS`.
 
-Também há uma API estática em <https://cnainput.github.io/dailydumps/>: [`latest.json`](https://cnainput.github.io/dailydumps/latest.json) (último dia e resumo), [`dates.json`](https://cnainput.github.io/dailydumps/dates.json), [`instruments.json`](https://cnainput.github.io/dailydumps/instruments.json), `instruments/{slug}.json` (série diária, série ajustada e eventos de cada instrumento) e [`badge.json`](https://cnainput.github.io/dailydumps/badge.json).
+Também há uma API estática, descrita em <https://cnainput.github.io/dailydumps/api.html>: [`latest.json`](https://cnainput.github.io/dailydumps/latest.json) (último dia e resumo), [`dates.json`](https://cnainput.github.io/dailydumps/dates.json), [`instruments.json`](https://cnainput.github.io/dailydumps/instruments.json), `instruments/{slug}.json` (série diária, série ajustada e eventos de cada instrumento) e [`badge.json`](https://cnainput.github.io/dailydumps/badge.json).
 
 ### O que convém saber
 
@@ -56,11 +59,25 @@ Também há uma API estática em <https://cnainput.github.io/dailydumps/>: [`lat
 - **Capitalização** é o preço vezes as shares em circulação (as detidas), nunca vezes as shares autorizadas.
 - **Privacidade.** Não se exportam identificadores de contas nem de utilizadores.
 
+## O site
+
+O site fica em <https://cnainput.github.io/dailydumps/> e é feito só com HTML, CSS e JavaScript puros (pasta `web/`), sem passo de compilação.
+
+| Página | O que mostra |
+|-|-|
+| Início | o último dia: resumo do fecho, índices, maior subida e descida, e todos os instrumentos |
+| Dia | qualquer dia arquivado, com abertura, máximo, mínimo, fecho, ticks, eventos, capitalização e a descarga dos ticks |
+| Instrumentos | a lista e, em cada um, o gráfico da série diária (bruta e ajustada aos splits), os eventos, os dividendos e a capitalização |
+| Pesquisa | dias, ticks, eventos, capitalização, dividendos e impostos, e ficheiros, cada um com filtros e ordenação por coluna |
+| Estado | o último dia, a hora de geração, os dias em falta e os avisos de cada dia |
+
+Os endereços usam o hash (por exemplo `#/dia/2026-10-27` e `#/instrumento/newte`) e os filtros da pesquisa ficam no endereço, por isso podem ser partilhados. Os dados pequenos (OHLC, resumos, eventos, manifesto) são lidos do próprio site. Os ticks são lidos deste repositório, em <https://raw.githubusercontent.com/CNAinput/dailydumps/main/prices/>, só quando alguém os pede.
+
 ## Contribuir
 
 - **Dado errado**: [abre uma issue](https://github.com/CNAinput/dailydumps/issues/new/choose) com o modelo "Dado errado". Os ficheiros de dias passados não se corrigem por pull request.
 - **Evento estrutural** (IPO, split, emissão, retirada de cotação): acrescenta uma linha ao `events.csv` num pull request. Quando o workflow deteta uma alteração por registar abre uma issue com as linhas sugeridas. O guia está em [docs/OPERATIONS.md](docs/OPERATIONS.md).
-- Os pull requests só podem alterar o `events.csv`, a documentação, o código e os testes. O workflow `verify-pr` falha se tocarem em ficheiros de dias passados.
+- Os pull requests só podem alterar o `events.csv`, a documentação, o código (incluindo o site em `web/`) e os testes. O workflow `verify-pr` falha se tocarem em ficheiros de dias passados.
 
 ## Desenvolvimento
 
@@ -70,6 +87,15 @@ Python 3.10 ou superior, sem dependências externas (o pacote `tzdata` só é pr
 python -m unittest discover -s tests -t .
 python -m cnadump verify
 ```
+
+Para ver o site no computador, gera-o e serve a pasta `_site` (os módulos do site não funcionam a partir de `file://`):
+
+```bash
+python -m cnadump build-pages _site
+python -m http.server 8000 -d _site
+```
+
+Depois abre <http://localhost:8000>. O GitHub Pages só republica quando o workflow `dump` corre, por isso depois de alterar o `web/` é preciso disparar o `dump` à mão (ver [docs/OPERATIONS.md](docs/OPERATIONS.md)).
 
 Mais detalhes, o funcionamento do workflow e o que o dono tem de configurar estão em [docs/OPERATIONS.md](docs/OPERATIONS.md). As fontes de dados e o acesso verificado estão em [docs/SOURCES.md](docs/SOURCES.md).
 

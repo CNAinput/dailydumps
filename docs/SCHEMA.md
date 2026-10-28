@@ -190,9 +190,13 @@ O ficheiro de um dia nunca é sobrescrito. Se um recálculo diferir do ficheiro 
 
 São erros duros, que não escrevem nada e terminam com código de saída 2: contagem de linhas diferente da anunciada pelo servidor, timestamps fora da janela do dia, preços não finitos ou não positivos, ticks duplicados `(ts, code, asset_type)`, tipos de ativo desconhecidos, mais de um servidor (`guild_id`) nos dados, dia sem nenhum tick, e, quando o último dia fechado é gerado antes das 11:00 do dia seguinte (a base de dados ainda está no estado do fecho), um último tick que não iguala o `current_price` atual de algum instrumento. São avisos, que não bloqueiam: instrumento sem ticks num dia em que já existia, e lacunas de mais de 2 horas entre as 11:00 e as 23:00.
 
-## API estática (GitHub Pages)
+## Site e API estática (GitHub Pages)
 
-Gerada pelo workflow a partir dos ficheiros já guardados (`python -m cnadump build-pages`).
+Gerados pelo workflow a partir dos ficheiros já guardados (`python -m cnadump build-pages`). O site é o conteúdo da pasta `web/`, e a API e os ficheiros de dados juntam-se-lhe na mesma raiz.
+
+### API
+
+Os endereços da API não dependem do site: `build-pages` nunca deixa o `web/` ocupá-los.
 
 | Endereço | Conteúdo |
 |-|-|
@@ -201,3 +205,26 @@ Gerada pelo workflow a partir dos ficheiros já guardados (`python -m cnadump bu
 | `instruments.json` | instrumentos com `code`, `asset_type`, `name` e `slug` |
 | `instruments/{slug}.json` | metadados, série diária (`daily` e `daily_adjusted`) e `events` de um instrumento |
 | `badge.json` | estado no formato endpoint do shields.io (`schemaVersion`, `label`, `message`, `color`) |
+| `api.html` | página que descreve a API e liga ao site |
+
+### Ficheiros do arquivo servidos pelo site
+
+O site lê estes ficheiros do seu próprio domínio. Têm o mesmo caminho e o mesmo conteúdo, byte a byte, que no repositório.
+
+| Caminho | Nota |
+|-|-|
+| `daily/ohlc.csv`, `daily/ohlc_adjusted.csv` | todos os instrumentos e dias |
+| `events.csv` | só se existir |
+| `manifest.json`, `status.json`, `SHA256SUMS` | integridade e estado |
+| `dividends.json`, `taxes.json` | política em vigor |
+| `summary/AAAA-MM-DD.json` | um por dia arquivado |
+| `snapshots/AAAA-MM-DD.json` | só os dias com snapshot |
+
+Ficam de fora os ticks (`prices/`), que o site lê de `https://raw.githubusercontent.com/CNAinput/dailydumps/main/prices/` só quando alguém os pede (a origem está em `TICKS_BASE`, no `web/js/config.js`). Fica de fora também o `instruments.json` do repositório, porque o `instruments.json` da API tem o mesmo nome; o seu conteúdo está nos snapshots.
+
+### Regras do `build-pages`
+
+- O `web/index.html` tem de existir, senão o comando falha (código de saída 2) e não escreve nada.
+- Os ficheiros de `web/` são copiados para a raiz do site, exceto os ocultos (nomes que começam por ponto) e `__pycache__`.
+- O `web/` não pode ter ficheiros com os endereços da API, com os ficheiros da lista acima, nem dentro das pastas `instruments/`, `daily/`, `summary/`, `snapshots/` e `prices/`. Se tiver, o comando falha e lista os caminhos em conflito.
+- A página inicial do site é o `index.html` do `web/`. A API é descrita em `api.html`.

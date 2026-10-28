@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0a58a8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1217" media="(prefers-color-scheme: dark)">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://raw.githubusercontent.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="description" content="Arquivo público e permanente dos dados diários do mercado de ações da economia virtual da CNA: preços, resumos, eventos e snapshots, para ver e pesquisar.">
+<title>Arquivo de dados do mercado da CNA</title>
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/site.css">
+<script type="module" src="js/main.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="#/">Arquivo de dados do mercado da CNA</a>
+    <p class="header-status" id="estado-arquivo">A carregar o estado do arquivo...</p>
+  </div>
+  <nav class="site-nav" aria-label="Principal">
+    <ul class="wrap">
+      <li><a href="#/" data-nav="inicio">Início</a></li>
+      <li><a href="#/dia" data-nav="dia">Dia</a></li>
+      <li><a href="#/instrumentos" data-nav="instrumentos">Instrumentos</a></li>
+      <li><a href="#/pesquisa/dias" data-nav="pesquisa">Pesquisa</a></li>
+      <li><a href="#/estado" data-nav="estado">Estado</a></li>
+    </ul>
+  </nav>
+</header>
+<main id="conteudo" class="wrap" tabindex="-1">
+  <noscript>
+    <p class="note">Este site precisa de JavaScript para mostrar os dados. Sem ele, os ficheiros continuam acessíveis na <a href="api.html">API estática</a> e no <a href="https://github.com/CNAinput/dailydumps">repositório do GitHub</a>.</p>
+  </noscript>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Os valores estão em coins (¢), a moeda fictícia da economia virtual da CNA.</p>
+    <p>Dados sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt" rel="noopener noreferrer">CC BY 4.0</a>. Atribuição sugerida: «Arquivo de dados do mercado da CNA, licença CC BY 4.0». O código tem licença MIT.</p>
+    <p>Mantido pelo Instituto de Plataformas e Utilidades Tecnológicas da CNA. <a href="https://github.com/CNAinput/dailydumps" rel="noopener noreferrer">Repositório no GitHub</a> · <a href="api.html">API estática</a></p>
+  </div>
+</footer>
+<div id="anuncios" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>

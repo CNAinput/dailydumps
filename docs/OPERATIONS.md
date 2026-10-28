@@ -14,7 +14,7 @@ O workflow `dump` corre várias vezes por dia e cada execução faz o mesmo: cal
 
 O cron está em UTC e cobre o horário de verão e o de inverno (`17 22,23,1,4,7,9 * * *`, sem usar o minuto 00 para fugir ao congestionamento do GitHub). Algumas execuções caem antes do fecho e não fazem nada, e isso é intencional. O script decide sempre pelo relógio de Lisboa.
 
-Cada execução que gera dados faz, por esta ordem: testes, geração, ajuste das séries aos eventos, verificação de integridade, commit com rebase e push, abertura de issues para eventos por registar, geração e publicação da API estática no GitHub Pages, e ping ao Healthchecks.io. Se um passo falhar, o ping de falha é enviado e o GitHub envia um email.
+Cada execução que gera dados faz, por esta ordem: testes, geração, ajuste das séries aos eventos, verificação de integridade, commit com rebase e push, abertura de issues para eventos por registar, geração e publicação do site e da API estática no GitHub Pages, e ping ao Healthchecks.io. Se um passo falhar, o ping de falha é enviado e o GitHub envia um email.
 
 ## O que o dono tem de configurar
 
@@ -47,6 +47,27 @@ O `.env` local é ignorado pelo Git. O `.env.example` mostra o formato. A chave 
 - **`verify-pr.yml`**: em cada pull request corre os testes, a verificação de integridade, o `sha256sum -c SHA256SUMS` e a guarda `guard`, que falha se o pull request tocar em `prices/`, `summary/`, `snapshots/`, `daily/` ou nos ficheiros gerados da raiz (`manifest.json`, `SHA256SUMS`, `status.json`, `instruments.json`, `dividends.json`, `taxes.json`). Só o `events.csv`, a documentação, o código e os testes podem mudar por pull request.
 - **Versões das actions**: estão fixadas por tag de versão exata (`actions/checkout`, `actions/setup-python`, `actions/upload-pages-artifact` e `actions/deploy-pages`). Para maior rigor podem passar a SHA de commit: troca-se `@v7.0.1` pelo SHA de 40 caracteres do mesmo release, deixando a versão num comentário.
 
+## O site
+
+O site vive na pasta `web/` e é publicado, com a API estática, pelo workflow `dump`. Usa só HTML, CSS e JavaScript puros: sem dependências, sem passo de compilação e sem recursos externos (uma política de segurança de conteúdo no `index.html` recusa tudo o que não venha do próprio domínio ou do `raw.githubusercontent.com`).
+
+**Republicar depois de alterar o `web/`.** O GitHub Pages só republica quando o `dump` corre, às horas agendadas ou à mão. Um commit que só mexa no `web/` não dispara nada. Depois de carregar os ficheiros, abre Actions, `dump`, Run workflow, sem preencher nenhuma entrada. Numa execução manual o site e a API são sempre gerados e publicados, mesmo que não haja nada novo para arquivar. O GitHub Pages guarda os ficheiros em cache até 10 minutos: os dados são pedidos com revalidação, mas o CSS e os scripts podem demorar a atualizar (Ctrl+F5 resolve).
+
+**Testar no computador.**
+
+```bash
+python -m cnadump build-pages _site
+python -m http.server 8000 -d _site
+```
+
+Depois abre <http://localhost:8000>. Os módulos do site não funcionam a partir de `file://`.
+
+**Onde mudar o quê.** Em `web/js/config.js`: o repositório, a origem dos ticks (`TICKS_BASE`; se ficar vazia o site lê os ticks do próprio domínio, e então o `build-pages` tem de passar a copiar `prices/`), o modelo do endereço dos despachos (`DOCUMENT_URL`, com `{id}`; vazio, mostra só o número), o máximo de dias por pesquisa de ticks e o limiar dos avisos de poucos ticks. As cores estão no início do `web/css/site.css`, com o tema escuro a seguir a preferência do sistema.
+
+**Garantias.** O `tests/test_web.py` verifica que o `web/` não usa `innerHTML` nem equivalentes (os nomes das empresas são escritos por utilizadores do Discord), que não carrega nada de fora, que tem a política de segurança de conteúdo e que todos os módulos existem e são usados. O `tests/test_style.py` aplica ao `.css` e ao `.js` as regras de estilo do resto do repositório (sem travessões nem dois traços seguidos; as propriedades personalizadas do CSS só valem em ficheiros `.css`).
+
+Os testes correm no `dump` antes de arquivar. Um erro de estilo ou de segurança num ficheiro do `web/` carregado diretamente na `main` faz o `dump` dessa noite falhar até ser corrigido. Não se perdem dados, porque a base de dados guarda 40 dias.
+
 ## Exploração local
 
 Requer Python 3.10 ou superior. Não há dependências, exceto o `tzdata` no Windows.
@@ -68,7 +89,7 @@ No Windows o interpretador do ambiente é `.venv\Scripts\python.exe`. Os comando
 | `python -m cnadump adjust` | regenera `daily/ohlc_adjusted.csv` a partir do `events.csv` |
 | `python -m cnadump verify` | verifica a integridade do repositório |
 | `python -m cnadump pending` | mostra os eventos estruturais por registar (`pending open` abre as issues com o `gh`) |
-| `python -m cnadump build-pages [pasta]` | gera a API estática (por omissão em `_site/`) |
+| `python -m cnadump build-pages [pasta]` | gera o site (`web/`) e a API estática (por omissão em `_site/`) |
 | `python -m cnadump guard` | lê caminhos do stdin e falha se algum só puder ser escrito pelo workflow |
 | `python -m cnadump ping ok` ou `fail` | envia o ping ao Healthchecks.io, se houver URL |
 
@@ -96,6 +117,8 @@ Qualquer erro duro termina com o código 2 e uma mensagem em português, e **nã
 | `mais de um servidor (guild_id)` | as políticas RLS passaram a expor outro servidor | rever as políticas; o arquivo é de um só servidor |
 | `já existe com N ticks e o recalculado tem M` | o dia mudou na base de dados (típico depois de um split) | normal: o ficheiro arquivado mantém-se; para o substituir usar `regenerate` |
 | `Acesso recusado pelo servidor (HTTP 401)` | URL ou chave erradas nas variáveis do repositório | corrigir as variáveis |
+| `web/index.html em falta: o site não pode ser publicado` | a pasta `web/` ou o `index.html` foi apagado | repor o `web/` e disparar o `dump` à mão |
+| `web/...: o caminho pertence à API ou aos dados` | um ficheiro do `web/` usa um endereço reservado | mudar o nome ou apagar esse ficheiro |
 
 ## Registar um evento estrutural
 
@@ -142,3 +165,4 @@ O dia em falta fica visível no `dates.json`. O mesmo procedimento serve para qu
 - O arquivo não tem como reconstituir shares detidas passadas. Os dias arquivados depois do fecho (backfill) não têm snapshot nem capitalização.
 - Os agendamentos do GitHub podem atrasar. Por isso há repetições até às 10:30, e um dia que só seja gerado depois das 11:00 fica sem snapshot.
 - O ajuste de séries só trata splits. Reverse splits entram com um `factor` inferior a 1.
+- Os ticks que o site mostra vêm do `raw.githubusercontent.com`, que guarda em cache cerca de 5 minutos e pode limitar pedidos em excesso. Uma pesquisa de ticks carrega no máximo 60 dias, cerca de 80 KB cada.

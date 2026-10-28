@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Arquivo de dados do mercado da CNA">
+  <rect width="64" height="64" rx="12" fill="#0a58a8"/>
+  <polyline points="10,46 22,32 32,38 44,20 54,14" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="54" cy="14" r="5" fill="#ffffff"/>
+</svg>
