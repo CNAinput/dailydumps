@@ -280,6 +280,13 @@
       "sha256": "54843a221f4a523aee65a36ae1b7295f335be18ad77149ee049350df809dac90",
       "source": "backfill",
       "partial": false
+    },
+    "2026-10-28": {
+      "generated_at": "2026-10-29T01:48:52Z",
+      "rows": 1762,
+      "sha256": "87435f6cfa79569da3dd7bc90ced77bcc4f64d6d5483e49f6042c0658be0fc30",
+      "source": "daily",
+      "partial": false
     }
   }
 }
