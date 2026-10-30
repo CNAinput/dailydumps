@@ -37,6 +37,7 @@ class World:
         }]
         self.held = {}
         self.base = {}
+        self.dividend_payouts = []
         self._id = 0
 
     def add_company(self, code, name, price, shares_total=100000, created=date(2026, 8, 1)):
@@ -61,6 +62,17 @@ class World:
             "percentage": percentage, "distribution_days": days, "last_distribution": last,
             "next_distribution": nxt, "code": code, "asset_type": asset_type,
         })
+
+    def add_payout(self, code, asset_type, paid_at, payments, pct=50, pool=None, total_shares=None, origin="bot"):
+        """Pagamento de dividendos como a tabela dividend_payouts o devolve."""
+        total = round(sum(p["amount"] for p in payments), 2)
+        self.dividend_payouts.append({
+            "id": len(self.dividend_payouts) + 1, "guild_id": GUILD, "code": code, "asset_type": asset_type,
+            "paid_at": paid_at, "percentage": pct, "pool": total if pool is None else pool, "total_paid": total,
+            "total_shares": total_shares or sum(p["shares"] for p in payments), "origin": origin,
+            "payments": payments,
+        })
+        return self.dividend_payouts[-1]
 
     def standard(self):
         self.add_company("NEWTE", "NovaTecnologia,S.A.", 11.32, shares_total=300000)
@@ -125,6 +137,7 @@ class World:
             tables={
                 "price_history": self.price_history, "companies": self.companies, "assets": self.assets,
                 "dividends": self.dividends, "server_taxes": self.server_taxes,
+                "dividend_payouts": self.dividend_payouts,
             },
             rpcs={"rpc_get_market_aggregates": lambda: [
                 {"code": c, "asset_type": t, "held_shares": n} for (c, t), n in self.held.items()
@@ -172,6 +185,10 @@ def write_web(root, extra=None):
 
 
 NOW = lisbon_now(D27, 23, 17)
+
+
+def pay(beneficiary, kind, shares, amount):
+    return {"beneficiary": beneficiary, "kind": kind, "shares": shares, "amount": amount}
 
 
 class StandardWorldCase(PipelineCase):

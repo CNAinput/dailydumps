@@ -44,7 +44,7 @@ O `.env` local é ignorado pelo Git. O `.env.example` mostra o formato. A chave 
 ## Workflows
 
 - **`dump.yml`**: agendado e manual. Tem uma única concorrência (`dump`), que serializa as execuções sem cancelar nenhuma. As permissões são as mínimas necessárias: escrever o conteúdo, abrir issues e publicar no Pages. Tem duas entradas manuais: `backfill_from` (gera dias passados sem snapshots a partir dessa data) e `force_date` (regenera um dia já arquivado, o que fica registado no manifesto). Só publica a API estática quando houve alterações ou numa execução manual.
-- **`verify-pr.yml`**: em cada pull request corre os testes, a verificação de integridade, o `sha256sum -c SHA256SUMS` e a guarda `guard`, que falha se o pull request tocar em `prices/`, `summary/`, `snapshots/`, `daily/` ou nos ficheiros gerados da raiz (`manifest.json`, `SHA256SUMS`, `status.json`, `instruments.json`, `dividends.json`, `taxes.json`). Só o `events.csv`, a documentação, o código e os testes podem mudar por pull request.
+- **`verify-pr.yml`**: em cada pull request corre os testes, a verificação de integridade, o `sha256sum -c SHA256SUMS` e a guarda `guard`, que falha se o pull request tocar em `prices/`, `summary/`, `snapshots/`, `dividend_payouts/`, `daily/` ou nos ficheiros gerados da raiz (`manifest.json`, `SHA256SUMS`, `status.json`, `instruments.json`, `dividends.json`, `taxes.json`). Só o `events.csv`, a documentação, o código e os testes podem mudar por pull request.
 - **Versões das actions**: estão fixadas por tag de versão exata (`actions/checkout`, `actions/setup-python`, `actions/upload-pages-artifact` e `actions/deploy-pages`). Para maior rigor podem passar a SHA de commit: troca-se `@v7.0.1` pelo SHA de 40 caracteres do mesmo release, deixando a versão num comentário.
 
 ## O site
@@ -116,6 +116,8 @@ Qualquer erro duro termina com o código 2 e uma mensagem em português, e **nã
 | `o último tick de X é A mas o preço atual é B` | o preço atual foi alterado sem registo no histórico, ou há ticks por ler | corrigir a origem (por exemplo um split mal aplicado) e repetir |
 | `mais de um servidor (guild_id)` | as políticas RLS passaram a expor outro servidor | rever as políticas; o arquivo é de um só servidor |
 | `já existe com N ticks e o recalculado tem M` | o dia mudou na base de dados (típico depois de um split) | normal: o ficheiro arquivado mantém-se; para o substituir usar `regenerate` |
+| `dividend_payouts, linha N: ...` (por exemplo `a soma dos pagamentos (...) difere de total_paid`, `origin desconhecido`, `kind desconhecido`) | uma linha de `dividend_payouts` inválida, em geral por um erro do bot ao registar | corrigir a linha na origem; só depois o dia pode ser arquivado |
+| `os pagamentos de dividendos da base de dados diferem de dividend_payouts/...` | o bot registou um pagamento depois de o dia ter sido arquivado (por exemplo, esteve parado depois das 23:00) | usar `regenerate` nesse dia |
 | `Acesso recusado pelo servidor (HTTP 401)` | URL ou chave erradas nas variáveis do repositório | corrigir as variáveis |
 | `web/index.html em falta: o site não pode ser publicado` | a pasta `web/` ou o `index.html` foi apagado | repor o `web/` e disparar o `dump` à mão |
 | `web/...: o caminho pertence à API ou aos dados` | um ficheiro do `web/` usa um endereço reservado | mudar o nome ou apagar esse ficheiro |
@@ -144,6 +146,15 @@ Quando uma alteração tem vários passos no mesmo dia, regista-se o efeito líq
 Só por pedido explícito: Actions, `dump`, Run workflow, `force_date` com a data. O ficheiro do dia é substituído e o `manifest.json` guarda em `regenerations` o instante, o `sha256` e o número de ticks anteriores. Se o recalculado for igual ao arquivado não muda nada. Os pull requests nunca podem fazer isto.
 
 Usa-se, por exemplo, quando um dia foi arquivado com dados que a origem corrigiu, ou para um dia arquivado antes de um split que se queira nas unidades novas.
+
+## Pagamentos de dividendos
+
+O bot regista cada pagamento de dividendos na tabela `dividend_payouts` (uma linha por política paga, com o valor distribuído e o que recebeu cada beneficiário), e cada dia arquivado a partir de 2026-10-30 leva os pagamentos desse dia civil de Lisboa num ficheiro `dividend_payouts/AAAA-MM-DD.json`. O pagamento é às 23:00, por isso entra no ficheiro do próprio dia, arquivado cerca das 23:17. O formato está em `docs/SCHEMA.md`.
+
+- **O bot tem de estar atualizado.** Se o bot em produção ainda não escreve em `dividend_payouts`, os pagamentos desse dia não existem na base de dados e o dia fica com `dividend_payouts` a 0 no manifesto. O registo de auditoria do bot (`audit_events`) guarda durante 3 dias o valor pago a cada conta, por isso nesse prazo ainda se reconstrói à mão (ver o último ponto).
+- **A base de dados só guarda os pagamentos 14 dias.** O arquivo copia-os no próprio dia e o bot apaga-os depois (`prune_old_data`), por isso a tabela fica sempre pequena. Se o `dump` ficar parado mais de 14 dias, os dias que ficarem por arquivar nesse intervalo saem sem pagamentos (com um aviso, e sem o campo `dividend_payouts` no manifesto); os preços continuam recuperáveis até 40 dias. O alerta de 26 horas do Healthchecks.io existe precisamente para que isto nunca chegue a acontecer.
+- **Um pagamento que o bot só faça depois de o `dump` do dia ter corrido** (esteve parado às 23:00 e pagou, por exemplo, às 23:40) não entra no ficheiro desse dia, e as execuções normais não dão por isso porque só olham para a frente. Acrescenta-se com `regenerate` (Actions, `dump`, `force_date` com a data), que fica registado em `regenerations`. Se o pagamento só chegar depois da meia-noite, pertence ao dia seguinte e não há nada a fazer.
+- **Reconstruir um pagamento à mão** (só se o registo falhou): inserir a linha em `dividend_payouts` com `origin` igual a `reconstruction`, com a soma dos `amount` igual a `total_paid`, e depois `regenerate` do dia. Convém conferir cada parcela com `pool` vezes `shares` a dividir por `total_shares`, arredondado a 2 casas.
 
 ## Um dia sem ticks
 

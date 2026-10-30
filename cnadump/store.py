@@ -25,9 +25,10 @@ EVENTS = "events.csv"
 
 # Ficheiros gerados que entram no SHA256SUMS (o events.csv é mantido à mão e fica de fora).
 SINGLE_FILES = (OHLC, OHLC_ADJUSTED, MANIFEST, STATUS, INSTRUMENTS, DIVIDENDS, TAXES)
-DAY_DIRS = ("prices", "snapshots", "summary")
+DAY_DIRS = ("prices", "snapshots", "summary", "dividend_payouts")
 
 _PRICE_FILE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})\.csv$")
+_PAYOUT_FILE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})\.json$")
 
 
 def sha256_hex(data):
@@ -54,6 +55,10 @@ class Repo:
     def summary_rel(day):
         return f"summary/{day.isoformat()}.json"
 
+    @staticmethod
+    def payouts_rel(day):
+        return f"dividend_payouts/{day.isoformat()}.json"
+
     def read(self, rel):
         path = self.root / rel
         return path.read_bytes() if path.is_file() else None
@@ -78,6 +83,16 @@ class Repo:
     def snapshot_days(self):
         base = self.root / "snapshots"
         return sorted(date.fromisoformat(p.stem) for p in base.glob("*.json")) if base.is_dir() else []
+
+    def payout_days(self):
+        base = self.root / "dividend_payouts"
+        days = set()
+        if base.is_dir():
+            for path in base.glob("*.json"):
+                match = _PAYOUT_FILE_RE.match(path.name)
+                if match:
+                    days.add(date.fromisoformat(match.group(1)))
+        return days
 
     def load_manifest(self):
         manifest = self.read_json(MANIFEST)

@@ -18,11 +18,11 @@ WEB_DIR = "web"
 # Ficheiros do arquivo copiados para o site com o caminho do repositório. Os ticks (prices/) ficam de fora,
 # o site lê-os do GitHub. O instruments.json do repositório também, porque o da API tem o mesmo nome.
 SITE_FILES = (OHLC, OHLC_ADJUSTED, EVENTS, MANIFEST, STATUS, SUMS, DIVIDENDS, TAXES)
-SITE_FOLDERS = ("summary", "snapshots")
+SITE_FOLDERS = ("summary", "snapshots", "dividend_payouts")
 API_FILES = ("latest.json", "dates.json", "instruments.json", "badge.json", "api.html")
 # Caminhos da API e dos dados: o site (web/) não os pode usar.
 RESERVED_FILES = frozenset(API_FILES) | frozenset(SITE_FILES) | {INSTRUMENTS}
-RESERVED_FOLDERS = frozenset({"instruments", "daily", "summary", "snapshots", "prices"})
+RESERVED_FOLDERS = frozenset({"instruments", "daily", "summary", "snapshots", "prices", "dividend_payouts"})
 
 API_HTML = """<!doctype html>
 <html lang="pt-PT">
@@ -49,8 +49,9 @@ code { background: rgba(127, 127, 127, 0.2); padding: 0.1em 0.3em; border-radius
 </ul>
 <p>Estes ficheiros do repositório também estão aqui, com o mesmo caminho: <code>daily/ohlc.csv</code>,
 <code>daily/ohlc_adjusted.csv</code>, <code>events.csv</code>, <code>manifest.json</code>, <code>status.json</code>,
-<code>SHA256SUMS</code>, <code>dividends.json</code>, <code>taxes.json</code>, <code>summary/AAAA-MM-DD.json</code>
-e <code>snapshots/AAAA-MM-DD.json</code>.</p>
+<code>SHA256SUMS</code>, <code>dividends.json</code>, <code>taxes.json</code>, <code>summary/AAAA-MM-DD.json</code>,
+<code>snapshots/AAAA-MM-DD.json</code> e <code>dividend_payouts/AAAA-MM-DD.json</code> (os pagamentos de dividendos
+do dia, só nos dias em que houve).</p>
 <p>Os ticks de cada dia (<code>prices/AAAA/AAAA-MM-DD.csv</code>) estão no repositório.</p>
 @@REPOSITORIO@@
 </body>
@@ -169,6 +170,7 @@ def build_pages(repo, out, now, repository=None, web=None):
             "prices": repo.prices_rel(day),
             "summary": repo.summary_rel(day),
             "snapshot": repo.snapshot_rel(day) if repo.read(repo.snapshot_rel(day)) is not None else None,
+            "dividend_payouts": repo.payouts_rel(day) if repo.read(repo.payouts_rel(day)) is not None else None,
         },
         "summary": repo.read_json(repo.summary_rel(day), exact=True),
     }

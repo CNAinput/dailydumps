@@ -100,6 +100,8 @@ def report(ctx, result):
         ctx.out(f"Dias gerados: {describe_days(result.days)} ({result.ticks} ticks).")
         if result.snapshot_day:
             ctx.out(f"Snapshot de {result.snapshot_day} guardado.")
+        if result.payouts:
+            ctx.out(f"Pagamentos de dividendos arquivados: {result.payouts}.")
 
 
 def cmd_day(args, ctx):

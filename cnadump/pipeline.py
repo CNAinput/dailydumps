@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from datetime import timedelta
 
 from . import events as ev
+from . import payouts as po
 from .errors import ImmutabilityError, ValidationError
 from .fmt import csv_bytes, json_bytes
 from .ohlc import OHLC_HEADER, PRICES_HEADER, compute_ohlc, merge_ohlc, prices_rows
@@ -29,6 +30,7 @@ class RunResult:
     warnings: list = field(default_factory=list)
     snapshot_day: object = None
     written: list = field(default_factory=list)
+    payouts: int = 0
 
 
 class Generator:
@@ -101,7 +103,7 @@ class Generator:
         last_closed = last_closed_day(now)
         instruments = self.source.instruments()
         meta = {i.key: i for i in instruments}
-        errors, warnings, guilds, data = [], [], set(), {}
+        errors, warnings, guilds, data, documents = [], [], set(), {}, {}
         for day in days:
             start, end = day_window(day)
             ticks, found, found_guilds = build_ticks(self.source.price_rows(start, end), start, end, day)
@@ -111,27 +113,57 @@ class Generator:
             born = {i.key for i in instruments if i.created_on == day}
             warnings += gap_warnings(day, ticks, partial, born) + missing_instrument_warnings(day, ticks, instruments)
             data[day] = (ticks, partial)
+            if po.tracked(day, now):
+                documents[day], found, notes, found_guilds = po.build_payouts(
+                    day, self.source.dividend_payouts(start, end), start, end
+                )
+                errors += found
+                warnings += notes
+                guilds |= found_guilds
+            elif po.covers(day):
+                warnings.append(
+                    f"{day}: os pagamentos de dividendos já passaram a retenção do bot ({po.RETENTION_DAYS} dias) "
+                    "e o dia fica sem registo deles."
+                )
         if len(guilds) > 1:
             errors.append("price_history devolveu mais de um servidor (guild_id).")
         if errors:
             raise ValidationError(errors)
 
-        todo, conflicts, files = [], [], {}
+        todo, conflicts, lost, files, payout_files = [], [], [], {}, {}
         for day in days:
             payload = csv_bytes(PRICES_HEADER, prices_rows(data[day][0]))
             old = repo.read(repo.prices_rel(day))
             files[day] = payload
-            if old == payload:
+            payout_payload = json_bytes(documents[day]) if documents.get(day) else None
+            payout_old = repo.read(repo.payouts_rel(day))
+            payout_files[day] = payout_payload
+            payouts_differ = po.tracked(day, now) and payout_payload != payout_old
+            if old == payload and not payouts_differ:
                 self.log(f"{day}: já arquivado e idêntico, nada a fazer.")
             elif old is not None and not regenerate:
-                archived = old.count(b"\n") - 1
-                conflicts.append(
-                    f"{day}: {repo.prices_rel(day)} já existe com {archived} ticks e o recalculado tem "
-                    f"{len(data[day][0])}. Os ficheiros de dias passados são imutáveis; "
-                    "usa o subcomando regenerate para os substituir de forma explícita."
-                )
+                if old != payload:
+                    archived = old.count(b"\n") - 1
+                    conflicts.append(
+                        f"{day}: {repo.prices_rel(day)} já existe com {archived} ticks e o recalculado tem "
+                        f"{len(data[day][0])}. Os ficheiros de dias passados são imutáveis; "
+                        "usa o subcomando regenerate para os substituir de forma explícita."
+                    )
+                else:
+                    conflicts.append(
+                        f"{day}: os pagamentos de dividendos da base de dados diferem de {repo.payouts_rel(day)}. "
+                        "Os ficheiros de dias passados são imutáveis; "
+                        "usa o subcomando regenerate para os substituir de forma explícita."
+                    )
             else:
+                if po.tracked(day, now) and payout_payload is None and payout_old is not None:
+                    lost.append(
+                        f"{day}: {repo.payouts_rel(day)} existe mas a base de dados já não tem pagamentos desse dia. "
+                        "Apaga o ficheiro à mão se for esse o objetivo."
+                    )
                 todo.append(day)
+        if lost:
+            raise ValidationError(lost)
         if conflicts:
             raise ImmutabilityError(conflicts)
         result = RunResult(warnings=warnings)
@@ -167,6 +199,10 @@ class Generator:
                 "generated_at": stamp, "rows": len(ticks), "sha256": sha256_hex(files[day]),
                 "source": label, "partial": partial,
             }
+            if po.tracked(day, now):
+                entry["dividend_payouts"] = len(documents[day]["payouts"]) if documents.get(day) else 0
+            elif old_entry and "dividend_payouts" in old_entry:
+                entry["dividend_payouts"] = old_entry["dividend_payouts"]
             if replaced and old_entry:
                 entry["regenerations"] = list(old_entry.get("regenerations", [])) + [{
                     "at": stamp,
@@ -176,6 +212,9 @@ class Generator:
                 }]
             manifest["days"][day.isoformat()] = entry
             tx.put(repo.prices_rel(day), files[day])
+            if payout_files[day] is not None:
+                tx.put(repo.payouts_rel(day), payout_files[day])
+                result.payouts += entry["dividend_payouts"]
             new_rows[day] = compute_ohlc(day, ticks)
             if day == snapshot_day:
                 day_snapshot = snapshot

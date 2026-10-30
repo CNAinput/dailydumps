@@ -5,9 +5,10 @@ from dataclasses import dataclass, field
 from decimal import Decimal
 
 from . import events as ev
-from .fmt import csv_bytes, read_csv
+from .fmt import csv_bytes, json_bytes, read_csv
 from .model import Tick
 from .ohlc import OHLC_HEADER, PRICES_HEADER, compute_ohlc
+from .payouts import build_payouts, covers, within_retention
 from .slugs import RESERVED, SLUG_RE
 from .store import (
     DIVIDENDS, EVENTS, INSTRUMENTS, MANIFEST, OHLC, OHLC_ADJUSTED, STATUS, SUMS, TAXES, Transaction, sha256_hex,
@@ -15,7 +16,7 @@ from .store import (
 )
 from .timeutil import day_window, parse_date, parse_timestamp
 
-PROTECTED_PREFIXES = ("prices/", "summary/", "snapshots/", "daily/")
+PROTECTED_PREFIXES = ("prices/", "summary/", "snapshots/", "daily/", "dividend_payouts/")
 PROTECTED_FILES = frozenset({MANIFEST, SUMS, STATUS, INSTRUMENTS, DIVIDENDS, TAXES})
 FORBIDDEN_KEYS = re.compile(r"account|user|discord|majority", re.IGNORECASE)
 
@@ -86,6 +87,53 @@ def _check_prices_file(repo, day, entry, errors):
     return ticks
 
 
+def _generated_in_retention(day, entry):
+    """True se o dia foi gerado enquanto o bot ainda guardava os seus pagamentos."""
+    try:
+        return within_retention(day, parse_timestamp(entry["generated_at"]))
+    except (KeyError, ValueError, TypeError):
+        return True
+
+
+def _check_payouts(repo, day, entry, report):
+    """Ficheiro de pagamentos do dia contra o manifesto e contra as regras do arquivo."""
+    rel = repo.payouts_rel(day)
+    data = repo.read(rel)
+    count = entry.get("dividend_payouts")
+    if count is None:
+        if data is not None:
+            report.errors.append(f"{rel}: o manifesto não indica pagamentos para este dia")
+        elif covers(day) and _generated_in_retention(day, entry):
+            report.warnings.append(f"manifest.json, {day}: sem registo de pagamentos de dividendos; regenera o dia")
+        return
+    if isinstance(count, bool) or not isinstance(count, int) or count < 0:
+        report.errors.append(f"manifest.json, {day}: dividend_payouts inválido")
+        return
+    if count == 0:
+        if data is not None:
+            report.errors.append(f"{rel}: existe mas o manifesto indica 0 pagamentos")
+        return
+    if data is None:
+        report.errors.append(f"{rel}: o manifesto indica {count} pagamentos mas o ficheiro não existe")
+        return
+    if b"\r" in data:
+        report.errors.append(f"{rel}: tem fins de linha CRLF")
+    try:
+        stored = repo.read_json(rel, exact=True)
+        payouts = stored["payouts"]
+    except (ValueError, KeyError, TypeError):
+        report.errors.append(f"{rel}: JSON ilegível ou sem a lista payouts")
+        return
+    start, end = day_window(day)
+    document, found, _, _ = build_payouts(day, payouts if isinstance(payouts, list) else [], start, end)
+    if found:
+        report.errors.extend(found)
+    elif document is None or json_bytes(document) != data:
+        report.errors.append(f"{rel}: não corresponde ao que as regras do arquivo geram a partir dos seus pagamentos")
+    elif len(document["payouts"]) != count:
+        report.errors.append(f"{rel}: tem {len(document['payouts'])} pagamentos mas o manifesto indica {count}")
+
+
 def verify_repo(repo):
     report = VerifyReport()
     errors, warnings = report.errors, report.warnings
@@ -112,6 +160,7 @@ def verify_repo(repo):
         ticks = _check_prices_file(repo, day, entry, errors)
         if ticks is not None:
             all_rows += compute_ohlc(day, ticks)
+        _check_payouts(repo, day, entry, report)
         if (entry.get("source") == "daily") != (day in snapshots):
             errors.append(f"{day}: o snapshot só deve existir nos dias com source daily")
         summary = repo.read_json(repo.summary_rel(day))
@@ -121,6 +170,8 @@ def verify_repo(repo):
             errors.append(f"{repo.summary_rel(day)}: market_cap_available não corresponde à existência do snapshot")
     for day in snapshots - set(days):
         errors.append(f"{repo.snapshot_rel(day)}: snapshot sem dia no manifesto")
+    for day in repo.payout_days() - set(days):
+        errors.append(f"{repo.payouts_rel(day)}: pagamentos sem dia no manifesto")
 
     ohlc = repo.read(OHLC)
     if all_rows or ohlc is not None:
@@ -149,8 +200,12 @@ def verify_repo(repo):
 
     exported = [DIVIDENDS, TAXES, INSTRUMENTS]
     exported += [repo.snapshot_rel(d) for d in sorted(snapshots)] + [repo.summary_rel(d) for d in sorted(days)]
+    exported += [repo.payouts_rel(d) for d in sorted(repo.payout_days())]
     for rel in exported:
-        content = repo.read_json(rel)
+        try:
+            content = repo.read_json(rel)
+        except ValueError:
+            continue  # já reportado acima
         if content is not None:
             _forbidden_keys(content, rel, errors)
 
