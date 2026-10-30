@@ -18,6 +18,7 @@ O site <https://cnainput.github.io/dailydumps/> deixa ver e pesquisar tudo o que
 | `daily/ohlc_adjusted.csv` | o mesmo, ajustado aos splits registados em `events.csv` |
 | `snapshots/AAAA-MM-DD.json` | estado no fecho: shares, shares em circulação e capitalização |
 | `summary/AAAA-MM-DD.json` | resumo do fecho: índices, maior subida e descida, maiores empresas |
+| `dividend_payouts/AAAA-MM-DD.json` | pagamentos de dividendos do dia: valor distribuído, média e quanto recebeu cada beneficiário |
 | `instruments.json` | instrumentos do último instantâneo, com o slug usado nos endereços |
 | `dividends.json`, `taxes.json` | política de dividendos e impostos em vigor |
 | `events.csv` | IPO, splits, emissões e retiradas de cotação, registados à mão |
@@ -32,6 +33,7 @@ O arquivo começa a **2026-09-18**, o primeiro dia que ainda existia na base de 
 
 - Os dias de `backfill` não têm snapshot nem capitalização: a história de shares detidas não se consegue reconstituir. Nos resumos desses dias os campos de capitalização são `null` e `market_cap_available` é `false`.
 - O primeiro dia pode ter perdido ticks pela retenção do bot. Esses dias ficam com `partial` verdadeiro no `manifest.json`. Neste momento nenhum dia está marcado como parcial: o primeiro dia arquivado começa às 11:00 de Lisboa, a hora de abertura.
+- Os pagamentos de dividendos só estão arquivados a partir de **2026-10-30**, o primeiro dia em que o bot os registou, e só nos dias em que houve. Os dois desse dia (P&PNV e ACHIP) foram reconstituídos a partir do registo de auditoria e estão marcados com `origin` igual a `reconstruction`. Antes disso não há dados por beneficiário. A base de dados só guarda os pagamentos 14 dias; o arquivo copia-os no próprio dia e é ele que os mantém.
 - Há um buraco real nos dados: em 2026-10-13 todos os instrumentos ficaram cerca de 4 horas seguidas sem ticks (entre as 17:03 e as 21:23 de Lisboa). Os ficheiros refletem o que a base de dados tinha.
 - Os índices têm alguns ticks isolados com o valor exato `100`, que é o valor base. Também estão na base de dados e são arquivados tal como estão.
 
@@ -57,7 +59,7 @@ Também há uma API estática, descrita em <https://cnainput.github.io/dailydump
 - **Splits.** Quando o bot faz um split reescreve todo o histórico, mas os ficheiros já arquivados não mudam. Os preços de dias gerados antes do split estão nas unidades antigas. Para uma série contínua usa `daily/ohlc_adjusted.csv`, ou `events.csv` e o `generated_at` de cada dia no manifesto.
 - **Os ficheiros de dias passados são imutáveis.** Só são substituídos por um pedido explícito, que fica registado no manifesto.
 - **Capitalização** é o preço vezes as shares em circulação (as detidas), nunca vezes as shares autorizadas.
-- **Privacidade.** Não se exportam identificadores de contas nem de utilizadores.
+- **Privacidade.** Não se exportam identificadores de contas nem de utilizadores. Os pagamentos de dividendos trazem o nome público do beneficiário: o nome global do perfil de Discord nas contas pessoais, o código da empresa nas contas de empresa e `Estado` no Banco Público.
 
 ## O site
 
