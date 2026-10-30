@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-29",
+  "market_cap_available": true,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 61.2,
+      "close": 68.48,
+      "change_pct": 11.9
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 206.82,
+      "close": 192.73,
+      "change_pct": -6.81
+    }
+  ],
+  "biggest_riser": {
+    "code": "2020T",
+    "asset_type": "company",
+    "name": "2020investimentos",
+    "open": 9.08,
+    "close": 11.23,
+    "change_pct": 23.68
+  },
+  "biggest_faller": {
+    "code": "P&PNV",
+    "asset_type": "asset",
+    "name": "P&P-ClasseNãoVotante",
+    "open": 1.4,
+    "close": 1.26,
+    "change_pct": -10
+  },
+  "calm_day": false,
+  "top_market_cap": [
+    {
+      "rank": 1,
+      "code": "NEWTE",
+      "name": "NovaTecnologia,S.A.",
+      "market_cap": 1598226.42
+    },
+    {
+      "rank": 2,
+      "code": "2020T",
+      "name": "2020investimentos",
+      "market_cap": 1030408.65
+    },
+    {
+      "rank": 3,
+      "code": "ACHIP",
+      "name": "AtivosDoChip,S.A.",
+      "market_cap": 176736.42
+    }
+  ],
+  "total_market_cap": 2932409.05,
+  "companies_count": 6
+}
