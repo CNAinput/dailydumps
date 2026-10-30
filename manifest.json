@@ -294,6 +294,14 @@
       "sha256": "b702594db8e9887bedbfd21a8a8d3aa3ad6ceffbfd856a2b31d697610f07aa48",
       "source": "daily",
       "partial": false
+    },
+    "2026-10-30": {
+      "generated_at": "2026-10-30T23:18:20Z",
+      "rows": 1768,
+      "sha256": "bf147f524b6d8e333be650920e2ed3fe84b60b18ededb32aa7d075ff3103e3ec",
+      "source": "daily",
+      "partial": false,
+      "dividend_payouts": 2
     }
   }
 }

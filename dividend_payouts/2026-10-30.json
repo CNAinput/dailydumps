@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-30",
+  "payouts": [
+    {
+      "code": "P&PNV",
+      "asset_type": "asset",
+      "paid_at": "2026-10-30T09:57:50Z",
+      "percentage": 50,
+      "pool": 5800.48,
+      "total_paid": 5800.47,
+      "beneficiaries": 11,
+      "average": 527.32,
+      "total_shares": 478216,
+      "origin": "reconstruction",
+      "payments": [
+        {
+          "beneficiary": "2020T",
+          "kind": "empresa",
+          "shares": 176565,
+          "amount": 2141.63
+        },
+        {
+          "beneficiary": "ACHIP",
+          "kind": "empresa",
+          "shares": 73529,
+          "amount": 891.86
+        },
+        {
+          "beneficiary": "ssslav7",
+          "kind": "pessoal",
+          "shares": 57301,
+          "amount": 695.03
+        },
+        {
+          "beneficiary": "Estado",
+          "kind": "estado",
+          "shares": 55626,
+          "amount": 674.71
+        },
+        {
+          "beneficiary": "CREFA",
+          "kind": "empresa",
+          "shares": 50017,
+          "amount": 606.68
+        },
+        {
+          "beneficiary": "Chip_12",
+          "kind": "pessoal",
+          "shares": 26318,
+          "amount": 319.22
+        },
+        {
+          "beneficiary": "GamerA21",
+          "kind": "pessoal",
+          "shares": 18509,
+          "amount": 224.5
+        },
+        {
+          "beneficiary": "KingBJ",
+          "kind": "pessoal",
+          "shares": 14292,
+          "amount": 173.35
+        },
+        {
+          "beneficiary": "PedroniXL",
+          "kind": "pessoal",
+          "shares": 4239,
+          "amount": 51.42
+        },
+        {
+          "beneficiary": "batata.j22",
+          "kind": "pessoal",
+          "shares": 1020,
+          "amount": 12.37
+        },
+        {
+          "beneficiary": "dani",
+          "kind": "pessoal",
+          "shares": 800,
+          "amount": 9.7
+        }
+      ]
+    },
+    {
+      "code": "ACHIP",
+      "asset_type": "company",
+      "paid_at": "2026-10-30T14:10:48Z",
+      "percentage": 30,
+      "pool": 45514.64,
+      "total_paid": 45514.64,
+      "beneficiaries": 5,
+      "average": 9102.93,
+      "total_shares": 34119,
+      "origin": "reconstruction",
+      "payments": [
+        {
+          "beneficiary": "2020T",
+          "kind": "empresa",
+          "shares": 30409,
+          "amount": 40565.51
+        },
+        {
+          "beneficiary": "ssslav7",
+          "kind": "pessoal",
+          "shares": 2122,
+          "amount": 2830.74
+        },
+        {
+          "beneficiary": "GamerA21",
+          "kind": "pessoal",
+          "shares": 1449,
+          "amount": 1932.96
+        },
+        {
+          "beneficiary": "KingBJ",
+          "kind": "pessoal",
+          "shares": 100,
+          "amount": 133.4
+        },
+        {
+          "beneficiary": "Chip_12",
+          "kind": "pessoal",
+          "shares": 39,
+          "amount": 52.03
+        }
+      ]
+    }
+  ]
+}

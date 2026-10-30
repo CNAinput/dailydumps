@@ -6,7 +6,7 @@
       "asset_type": "company",
       "percentage": 35,
       "distribution_days": 5,
-      "next_distribution": "2026-10-31T16:36:33.964915Z",
+      "next_distribution": "2026-10-31T23:00:00.000000Z",
       "last_distribution": "2026-10-26T16:36:33.964915Z"
     },
     {
@@ -14,15 +14,15 @@
       "asset_type": "company",
       "percentage": 30,
       "distribution_days": 14,
-      "next_distribution": "2026-10-30T14:09:47.042652Z",
-      "last_distribution": "2026-10-16T14:09:47.042652Z"
+      "next_distribution": "2026-11-13T23:00:00.000000Z",
+      "last_distribution": "2026-10-30T14:09:47.042652Z"
     },
     {
       "code": "NEWTE",
       "asset_type": "company",
       "percentage": 40,
       "distribution_days": 10,
-      "next_distribution": "2026-10-31T18:15:44.516261Z",
+      "next_distribution": "2026-10-31T23:00:00.000000Z",
       "last_distribution": "2026-10-21T18:15:44.516261Z"
     },
     {
@@ -30,8 +30,8 @@
       "asset_type": "asset",
       "percentage": 50,
       "distribution_days": 3,
-      "next_distribution": "2026-10-30T09:56:57.625726Z",
-      "last_distribution": "2026-10-27T09:56:57.625726Z"
+      "next_distribution": "2026-11-02T23:00:00.000000Z",
+      "last_distribution": "2026-10-30T09:56:57.625726Z"
     }
   ]
 }
