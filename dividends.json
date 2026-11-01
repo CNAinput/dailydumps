@@ -6,8 +6,8 @@
       "asset_type": "company",
       "percentage": 35,
       "distribution_days": 5,
-      "next_distribution": "2026-10-31T23:00:00.000000Z",
-      "last_distribution": "2026-10-26T16:36:33.964915Z"
+      "next_distribution": "2026-11-05T23:00:00.000000Z",
+      "last_distribution": "2026-10-31T23:00:00.000000Z"
     },
     {
       "code": "ACHIP",
@@ -22,8 +22,8 @@
       "asset_type": "company",
       "percentage": 40,
       "distribution_days": 10,
-      "next_distribution": "2026-10-31T23:00:00.000000Z",
-      "last_distribution": "2026-10-21T18:15:44.516261Z"
+      "next_distribution": "2026-11-10T23:00:00.000000Z",
+      "last_distribution": "2026-10-31T23:00:00.000000Z"
     },
     {
       "code": "P&PNV",
