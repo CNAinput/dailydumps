@@ -358,6 +358,14 @@
       "source": "daily",
       "partial": false,
       "dividend_payouts": 0
+    },
+    "2026-11-07": {
+      "generated_at": "2026-11-08T01:27:44Z",
+      "rows": 1774,
+      "sha256": "2c6a5f119a9b6b2d71051b8475dc291ef604284e8d60566a8b320eda9ccd2274",
+      "source": "daily",
+      "partial": false,
+      "dividend_payouts": 0
     }
   }
 }
