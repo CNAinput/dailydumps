@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-09",
+  "snapshot_at": "2026-11-10T04:08:28Z",
+  "instruments": [
+    {
+      "code": "2020T",
+      "name": "2020investimentos",
+      "asset_type": "company",
+      "is_index": false,
+      "owner_company_code": null,
+      "price": 14.89,
+      "shares_total": 100000,
+      "shares_in_circulation": 98095,
+      "market_cap": 1460634.55
+    },
+    {
+      "code": "ACFCP",
+      "name": "Porto",
+      "asset_type": "asset",
+      "is_index": false,
+      "owner_company_code": "ACHIP",
+      "price": 1.94,
+      "shares_total": 100000,
+      "shares_in_circulation": 42702,
+      "market_cap": 82841.88
+    },
+    {
+      "code": "ACFFC",
+      "name": "FIFA/EAFC",
+      "asset_type": "asset",
+      "is_index": false,
+      "owner_company_code": "ACHIP",
+      "price": 0.44,
+      "shares_total": 50000,
+      "shares_in_circulation": 0,
+      "market_cap": 0
+    },
+    {
+      "code": "ACHIP",
+      "name": "AtivosDoChip,S.A.",
+      "asset_type": "company",
+      "is_index": false,
+      "owner_company_code": null,
+      "price": 10.23,
+      "shares_total": 125000,
+      "shares_in_circulation": 28051,
+      "market_cap": 286961.73
+    },
+    {
+      "code": "ACLPB",
+      "name": "LigaPortugal",
+      "asset_type": "asset",
+      "is_index": false,
+      "owner_company_code": "ACHIP",
+      "price": 0.24,
+      "shares_total": 100000,
+      "shares_in_circulation": 2000,
+      "market_cap": 480
+    },
+    {
+      "code": "ACSCP",
+      "name": "Sporting",
+      "asset_type": "asset",
+      "is_index": false,
+      "owner_company_code": "ACHIP",
+      "price": 1.42,
+      "shares_total": 500000,
+      "shares_in_circulation": 354140,
+      "market_cap": 502878.8
+    },
+    {
+      "code": "ACSLB",
+      "name": "Benfica",
+      "asset_type": "asset",
+      "is_index": false,
+      "owner_company_code": "ACHIP",
+      "price": 2.68,
+      "shares_total": 100000,
+      "shares_in_circulation": 29813,
+      "market_cap": 79898.84
+    },
+    {
+      "code": "CREFA",
+      "name": "CréditoFácil",
+      "asset_type": "company",
+      "is_index": false,
+      "owner_company_code": null,
+      "price": 2.11,
+      "shares_total": 100000,
+      "shares_in_circulation": 36869,
+      "market_cap": 77793.59
+    },
+    {
+      "code": "NEWTE",
+      "name": "NovaTecnologia,S.A.",
+      "asset_type": "company",
+      "is_index": false,
+      "owner_company_code": null,
+      "price": 17.06,
+      "shares_total": 300000,
+      "shares_in_circulation": 206507,
+      "market_cap": 3523009.42
+    },
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "asset_type": "asset",
+      "is_index": true,
+      "owner_company_code": "P&PEP",
+      "price": 126.09,
+      "shares_total": 100000000,
+      "shares_in_circulation": 2638,
+      "market_cap": 332625.42
+    },
+    {
+      "code": "P&PEP",
+      "name": "Padrões&Pobres,E.P.",
+      "asset_type": "company",
+      "is_index": false,
+      "owner_company_code": null,
+      "price": 9.91,
+      "shares_total": 1000,
+      "shares_in_circulation": 1000,
+      "market_cap": 9910
+    },
+    {
+      "code": "P&PNV",
+      "name": "P&P-ClasseNãoVotante",
+      "asset_type": "asset",
+      "is_index": false,
+      "owner_company_code": "P&PEP",
+      "price": 1.3,
+      "shares_total": 750000,
+      "shares_in_circulation": 133793,
+      "market_cap": 173930.9
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "asset_type": "asset",
+      "is_index": true,
+      "owner_company_code": "P&PEP",
+      "price": 190.24,
+      "shares_total": 100000000,
+      "shares_in_circulation": 81,
+      "market_cap": 15409.44
+    },
+    {
+      "code": "STMEP",
+      "name": "SurvivalTM,E.P.",
+      "asset_type": "company",
+      "is_index": false,
+      "owner_company_code": null,
+      "price": 1.49,
+      "shares_total": 50000,
+      "shares_in_circulation": 27602,
+      "market_cap": 41126.98
+    }
+  ]
+}
