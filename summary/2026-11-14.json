@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-14",
+  "market_cap_available": true,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 115.76,
+      "close": 119.94,
+      "change_pct": 3.61
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 173.85,
+      "close": 166.98,
+      "change_pct": -3.95
+    }
+  ],
+  "biggest_riser": {
+    "code": "CREFA",
+    "asset_type": "company",
+    "name": "CréditoFácil",
+    "open": 1.76,
+    "close": 1.9,
+    "change_pct": 7.95
+  },
+  "biggest_faller": {
+    "code": "ACSLB",
+    "asset_type": "asset",
+    "name": "Benfica",
+    "open": 2.44,
+    "close": 2.03,
+    "change_pct": -16.8
+  },
+  "calm_day": false,
+  "top_market_cap": [
+    {
+      "rank": 1,
+      "code": "NEWTE",
+      "name": "NovaTecnologia,S.A.",
+      "market_cap": 3316732.72
+    },
+    {
+      "rank": 2,
+      "code": "2020T",
+      "name": "2020investimentos",
+      "market_cap": 1396000
+    },
+    {
+      "rank": 3,
+      "code": "ACHIP",
+      "name": "AtivosDoChip,S.A.",
+      "market_cap": 308626.99
+    }
+  ],
+  "total_market_cap": 5136113.41,
+  "companies_count": 6
+}
