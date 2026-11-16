@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-15",
+  "market_cap_available": true,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 119.94,
+      "close": 120.99,
+      "change_pct": 0.88
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 166.98,
+      "close": 147.11,
+      "change_pct": -11.9
+    }
+  ],
+  "biggest_riser": {
+    "code": "ACFFC",
+    "asset_type": "asset",
+    "name": "FIFA/EAFC",
+    "open": 0.32,
+    "close": 0.34,
+    "change_pct": 6.25
+  },
+  "biggest_faller": {
+    "code": "ACFCP",
+    "asset_type": "asset",
+    "name": "Porto",
+    "open": 1.28,
+    "close": 1.1,
+    "change_pct": -14.06
+  },
+  "calm_day": false,
+  "top_market_cap": [
+    {
+      "rank": 1,
+      "code": "NEWTE",
+      "name": "NovaTecnologia,S.A.",
+      "market_cap": 3350794.16
+    },
+    {
+      "rank": 2,
+      "code": "2020T",
+      "name": "2020investimentos",
+      "market_cap": 1403508.6
+    },
+    {
+      "rank": 3,
+      "code": "ACHIP",
+      "name": "AtivosDoChip,S.A.",
+      "market_cap": 317508.51
+    }
+  ],
+  "total_market_cap": 5181064.99,
+  "companies_count": 6
+}
