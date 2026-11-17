@@ -7,3 +7,5 @@ date,code,asset_type,event,factor,shares_before,shares_after,document_id,notes
 2026-10-13,ACHIP,company,issuance,,15000,125000,86,Emissão de 110000 shares com o preço mantido em 3.45.
 2026-11-05,ACSCP,asset,split,2.5,100000,250000,,Split 2 para 5. Preço de 3.01 para 1.20.
 2026-11-05,ACSCP,asset,issuance,,250000,500000,,Emissão de 250000 shares com o preço mantido em 1.20.
+2026-11-17,2020T,company,split,2,100000,200000,,Split 1 para 2. Preço de 12.96 para 6.48.
+2026-11-17,2020T,company,issuance,,200000,500000,,Emissão de 300000 shares com o preço mantido em 6.48.
