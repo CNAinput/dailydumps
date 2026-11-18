@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-17",
+  "market_cap_available": true,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 112.03,
+      "close": 118.75,
+      "change_pct": 6
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 230.34,
+      "close": 300.43,
+      "change_pct": 30.43
+    }
+  ],
+  "biggest_riser": {
+    "code": "P&PNV",
+    "asset_type": "asset",
+    "name": "P&P-ClasseNãoVotante",
+    "open": 1.45,
+    "close": 1.66,
+    "change_pct": 14.48
+  },
+  "biggest_faller": {
+    "code": "STMEP",
+    "asset_type": "company",
+    "name": "SurvivalTM,E.P.",
+    "open": 1.28,
+    "close": 1.16,
+    "change_pct": -9.38
+  },
+  "calm_day": false,
+  "top_market_cap": [
+    {
+      "rank": 1,
+      "code": "NEWTE",
+      "name": "NovaTecnologia,S.A.",
+      "market_cap": 3046540.38
+    },
+    {
+      "rank": 2,
+      "code": "2020T",
+      "name": "2020investimentos",
+      "market_cap": 1638100.37
+    },
+    {
+      "rank": 3,
+      "code": "ACHIP",
+      "name": "AtivosDoChip,S.A.",
+      "market_cap": 297334.46
+    }
+  ],
+  "total_market_cap": 5085058.49,
+  "companies_count": 6
+}
