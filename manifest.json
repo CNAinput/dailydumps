@@ -454,6 +454,14 @@
       "source": "daily",
       "partial": false,
       "dividend_payouts": 0
+    },
+    "2026-11-19": {
+      "generated_at": "2026-11-20T03:19:55Z",
+      "rows": 1769,
+      "sha256": "42b38d83c679b6c66adae1c7a9c9c46adab874853b9843ffb35e5ef5dfd027de",
+      "source": "daily",
+      "partial": false,
+      "dividend_payouts": 0
     }
   }
 }
