@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-20",
+  "payouts": [
+    {
+      "code": "2020T",
+      "asset_type": "company",
+      "paid_at": "2026-11-20T23:00:44Z",
+      "percentage": 35,
+      "pool": 115472.44,
+      "total_paid": 115472.45,
+      "beneficiaries": 9,
+      "average": 12830.27,
+      "total_shares": 239839,
+      "origin": "bot",
+      "payments": [
+        {
+          "beneficiary": "KingBJ",
+          "kind": "pessoal",
+          "shares": 80894,
+          "amount": 38947.08
+        },
+        {
+          "beneficiary": "ssslav7",
+          "kind": "pessoal",
+          "shares": 52166,
+          "amount": 25115.75
+        },
+        {
+          "beneficiary": "CREFA",
+          "kind": "empresa",
+          "shares": 35872,
+          "amount": 17270.87
+        },
+        {
+          "beneficiary": "ACHIP",
+          "kind": "empresa",
+          "shares": 30844,
+          "amount": 14850.1
+        },
+        {
+          "beneficiary": "Estado",
+          "kind": "estado",
+          "shares": 15822,
+          "amount": 7617.63
+        },
+        {
+          "beneficiary": "PedroniXL",
+          "kind": "pessoal",
+          "shares": 11207,
+          "amount": 5395.7
+        },
+        {
+          "beneficiary": "Chip_12",
+          "kind": "pessoal",
+          "shares": 9210,
+          "amount": 4434.23
+        },
+        {
+          "beneficiary": "GamerA21",
+          "kind": "pessoal",
+          "shares": 3082,
+          "amount": 1483.85
+        },
+        {
+          "beneficiary": "Rodezz",
+          "kind": "pessoal",
+          "shares": 742,
+          "amount": 357.24
+        }
+      ]
+    },
+    {
+      "code": "NEWTE",
+      "asset_type": "company",
+      "paid_at": "2026-11-20T23:00:58Z",
+      "percentage": 40,
+      "pool": 66788.7,
+      "total_paid": 66788.71,
+      "beneficiaries": 12,
+      "average": 5565.73,
+      "total_shares": 219018,
+      "origin": "bot",
+      "payments": [
+        {
+          "beneficiary": "2020T",
+          "kind": "empresa",
+          "shares": 115617,
+          "amount": 35256.96
+        },
+        {
+          "beneficiary": "ssslav7",
+          "kind": "pessoal",
+          "shares": 31735,
+          "amount": 9677.47
+        },
+        {
+          "beneficiary": "CREFA",
+          "kind": "empresa",
+          "shares": 27837,
+          "amount": 8488.79
+        },
+        {
+          "beneficiary": "ACHIP",
+          "kind": "empresa",
+          "shares": 25759,
+          "amount": 7855.11
+        },
+        {
+          "beneficiary": "GamerA21",
+          "kind": "pessoal",
+          "shares": 6543,
+          "amount": 1995.26
+        },
+        {
+          "beneficiary": "Estado",
+          "kind": "estado",
+          "shares": 5793,
+          "amount": 1766.55
+        },
+        {
+          "beneficiary": "KingBJ",
+          "kind": "pessoal",
+          "shares": 3248,
+          "amount": 990.47
+        },
+        {
+          "beneficiary": "Chip_12",
+          "kind": "pessoal",
+          "shares": 1295,
+          "amount": 394.91
+        },
+        {
+          "beneficiary": "Rodezz",
+          "kind": "pessoal",
+          "shares": 437,
+          "amount": 133.26
+        },
+        {
+          "beneficiary": "dani",
+          "kind": "pessoal",
+          "shares": 352,
+          "amount": 107.34
+        },
+        {
+          "beneficiary": "batata.j22",
+          "kind": "pessoal",
+          "shares": 218,
+          "amount": 66.48
+        },
+        {
+          "beneficiary": "PedroniXL",
+          "kind": "pessoal",
+          "shares": 184,
+          "amount": 56.11
+        }
+      ]
+    }
+  ]
+}
