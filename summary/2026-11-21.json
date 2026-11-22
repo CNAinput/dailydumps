@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-21",
+  "market_cap_available": true,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 127.8,
+      "close": 124.39,
+      "change_pct": -2.67
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 300.35,
+      "close": 315.39,
+      "change_pct": 5.01
+    }
+  ],
+  "biggest_riser": {
+    "code": "STMEP",
+    "asset_type": "company",
+    "name": "SurvivalTM,E.P.",
+    "open": 0.86,
+    "close": 0.92,
+    "change_pct": 6.98
+  },
+  "biggest_faller": {
+    "code": "CREFA",
+    "asset_type": "company",
+    "name": "CréditoFácil",
+    "open": 1.73,
+    "close": 1.54,
+    "change_pct": -10.98
+  },
+  "calm_day": false,
+  "top_market_cap": [
+    {
+      "rank": 1,
+      "code": "NEWTE",
+      "name": "NovaTecnologia,S.A.",
+      "market_cap": 3206423.52
+    },
+    {
+      "rank": 2,
+      "code": "2020T",
+      "name": "2020investimentos",
+      "market_cap": 1784402.16
+    },
+    {
+      "rank": 3,
+      "code": "ACHIP",
+      "name": "AtivosDoChip,S.A.",
+      "market_cap": 247364.89
+    }
+  ],
+  "total_market_cap": 5326519.17,
+  "companies_count": 6
+}
