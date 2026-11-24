@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "snapshot_date": "2026-11-22",
-  "snapshot_at": "2026-11-23T02:48:23Z",
+  "snapshot_date": "2026-11-23",
+  "snapshot_at": "2026-11-24T06:05:47Z",
   "instruments": [
     {
       "code": "2020T",
@@ -9,11 +9,23 @@
       "asset_type": "company",
       "is_index": false,
       "owner_company_code": null,
-      "price": 7.4,
+      "price": 6.99,
       "shares_total": 500000,
       "shares_in_circulation": 240887,
-      "market_cap": 1782563.8,
+      "market_cap": 1683800.13,
       "slug": "2020t"
+    },
+    {
+      "code": "20TNV",
+      "name": "2020T Classe Não Votante",
+      "asset_type": "asset",
+      "is_index": false,
+      "owner_company_code": "2020T",
+      "price": 1.91,
+      "shares_total": 500000,
+      "shares_in_circulation": 151630,
+      "market_cap": 289613.3,
+      "slug": "20tnv"
     },
     {
       "code": "ACFCP",
@@ -21,10 +33,10 @@
       "asset_type": "asset",
       "is_index": false,
       "owner_company_code": "ACHIP",
-      "price": 0.87,
+      "price": 1,
       "shares_total": 100000,
       "shares_in_circulation": 26186,
-      "market_cap": 22781.82,
+      "market_cap": 26186,
       "slug": "acfcp"
     },
     {
@@ -33,7 +45,7 @@
       "asset_type": "asset",
       "is_index": false,
       "owner_company_code": "ACHIP",
-      "price": 0.4,
+      "price": 0.39,
       "shares_total": 50000,
       "shares_in_circulation": 0,
       "market_cap": 0,
@@ -45,10 +57,10 @@
       "asset_type": "company",
       "is_index": false,
       "owner_company_code": null,
-      "price": 8.43,
+      "price": 11.06,
       "shares_total": 125000,
       "shares_in_circulation": 41686,
-      "market_cap": 351412.98,
+      "market_cap": 461047.16,
       "slug": "achip"
     },
     {
@@ -69,10 +81,10 @@
       "asset_type": "asset",
       "is_index": false,
       "owner_company_code": "ACHIP",
-      "price": 1.19,
+      "price": 1.22,
       "shares_total": 500000,
       "shares_in_circulation": 328581,
-      "market_cap": 391011.39,
+      "market_cap": 400868.82,
       "slug": "acscp"
     },
     {
@@ -81,10 +93,10 @@
       "asset_type": "asset",
       "is_index": false,
       "owner_company_code": "ACHIP",
-      "price": 2.12,
+      "price": 2.19,
       "shares_total": 100000,
       "shares_in_circulation": 29813,
-      "market_cap": 63203.56,
+      "market_cap": 65290.47,
       "slug": "acslb"
     },
     {
@@ -105,10 +117,10 @@
       "asset_type": "company",
       "is_index": false,
       "owner_company_code": null,
-      "price": 13.54,
+      "price": 16.33,
       "shares_total": 300000,
       "shares_in_circulation": 224786,
-      "market_cap": 3043602.44,
+      "market_cap": 3670755.38,
       "slug": "newte"
     },
     {
@@ -117,10 +129,10 @@
       "asset_type": "asset",
       "is_index": true,
       "owner_company_code": "P&PEP",
-      "price": 122.84,
+      "price": 137.72,
       "shares_total": 100000000,
-      "shares_in_circulation": 2947,
-      "market_cap": 362009.48,
+      "shares_in_circulation": 3639,
+      "market_cap": 501163.08,
       "slug": "p-and-p10"
     },
     {
@@ -129,10 +141,10 @@
       "asset_type": "company",
       "is_index": false,
       "owner_company_code": null,
-      "price": 6.29,
+      "price": 6.03,
       "shares_total": 1000,
       "shares_in_circulation": 980,
-      "market_cap": 6164.2,
+      "market_cap": 5909.4,
       "slug": "p-and-pep"
     },
     {
@@ -141,10 +153,10 @@
       "asset_type": "asset",
       "is_index": false,
       "owner_company_code": "P&PEP",
-      "price": 2.21,
+      "price": 2.2,
       "shares_total": 750000,
-      "shares_in_circulation": 645903,
-      "market_cap": 1427445.63,
+      "shares_in_circulation": 608723,
+      "market_cap": 1339190.6,
       "slug": "p-and-pnv"
     },
     {
@@ -153,10 +165,10 @@
       "asset_type": "asset",
       "is_index": true,
       "owner_company_code": "P&PEP",
-      "price": 431.4,
+      "price": 480.48,
       "shares_total": 100000000,
       "shares_in_circulation": 81,
-      "market_cap": 34943.4,
+      "market_cap": 38918.88,
       "slug": "ppa10"
     },
     {
@@ -165,10 +177,10 @@
       "asset_type": "company",
       "is_index": false,
       "owner_company_code": null,
-      "price": 0.9,
+      "price": 0.87,
       "shares_total": 50000,
       "shares_in_circulation": 27602,
-      "market_cap": 24841.8,
+      "market_cap": 24013.74,
       "slug": "stmep"
     }
   ]
