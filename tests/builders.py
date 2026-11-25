@@ -48,11 +48,12 @@ class World:
         })
         self.base[(code, "company")] = price
 
-    def add_asset(self, code, name, price, owner="P&PEP", is_index=False, shares_total=100000, created=date(2026, 8, 1)):
+    def add_asset(self, code, name, price, owner="P&PEP", is_index=False, shares_total=100000, created=date(2026, 8, 1),
+                  is_share_class=False):
         self.assets.append({
             "code": code, "guild_id": GUILD, "name": name, "account_id": "SEGREDO-CONTA-2",
             "shares_total": shares_total, "current_price": price, "creation_date": local(created, 12),
-            "owner_company_code": owner, "is_index": is_index, "majority_owner": None,
+            "owner_company_code": owner, "is_index": is_index, "is_share_class": is_share_class, "majority_owner": None,
         })
         self.base[(code, "asset")] = price
 

@@ -24,6 +24,18 @@ def _mover(key, name, first, last, change):
     }
 
 
+def _companies_with_classes(instruments):
+    """Empresas, com as classes somadas à capitalização."""
+    extra = {}
+    # Instantâneos antigos não têm o campo.
+    for item in instruments:
+        if item.get("is_share_class"):
+            parent = item["owner_company_code"]
+            extra[parent] = extra.get(parent, 0) + item["market_cap"]
+    companies = [i for i in instruments if i["asset_type"] == "company" and not i["is_index"]]
+    return [dict(c, market_cap=c["market_cap"] + extra[c["code"]]) if c["code"] in extra else c for c in companies]
+
+
 def build_summary(day, ticks, meta, snapshot):
     """`meta` mapeia (código, tipo) para o instrumento atual. `snapshot` é None sem capitalização."""
     first, last = {}, {}
@@ -72,7 +84,7 @@ def build_summary(day, ticks, meta, snapshot):
         "companies_count": None,
     }
     if snapshot is not None:
-        companies = [i for i in snapshot["instruments"] if i["asset_type"] == "company" and not i["is_index"]]
+        companies = _companies_with_classes(snapshot["instruments"])
         ranked = sorted((c for c in companies if c["market_cap"] > 0), key=lambda c: (-c["market_cap"], c["code"]))
         summary["top_market_cap"] = [
             {"rank": n, "code": c["code"], "name": c["name"], "market_cap": c["market_cap"]}

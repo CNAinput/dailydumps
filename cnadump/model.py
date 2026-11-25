@@ -30,6 +30,7 @@ class Instrument:
     price: Decimal
     shares_total: int
     created_on: Optional[date]
+    is_share_class: bool = False
 
     @property
     def key(self):

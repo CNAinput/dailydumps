@@ -301,6 +301,30 @@ class SummaryTests(unittest.TestCase):
         self.assertEqual(summary["total_market_cap"], Decimal("650.00"))
         self.assertEqual(summary["companies_count"], 5)
 
+    def test_classes_contam_na_empresa(self):
+        snap = snapshot_of([
+            ("A", "company", False, 100), ("B", "company", False, 300), ("C", "company", False, 0),
+            ("ANV", "asset", False, 250), ("CNV", "asset", False, 40), ("OURO", "asset", False, 9999),
+        ])
+        for item in snap["instruments"]:
+            parent = {"ANV": "A", "CNV": "C"}.get(item["code"])
+            item.update(is_share_class=parent is not None, owner_company_code=parent)
+        summary = build_summary(DAY, ticks_of("A", [1, 1]), {}, snap)
+        self.assertEqual([(t["code"], t["market_cap"]) for t in summary["top_market_cap"]],
+                         [("A", Decimal("350")), ("B", Decimal("300")), ("C", Decimal("40"))])
+        self.assertEqual(summary["total_market_cap"], Decimal("690.00"))
+        self.assertEqual(summary["companies_count"], 3)
+
+    def test_instantaneo_sem_o_campo_nao_soma_ativos(self):
+        snap = snapshot_of([("A", "company", False, 100), ("ANV", "asset", False, 250)])
+        summary = build_summary(DAY, ticks_of("A", [1, 1]), {}, snap)
+        self.assertEqual(summary["total_market_cap"], Decimal("100.00"))
+
+    def test_classe_continua_a_poder_ser_destaque(self):
+        metas = {("ANV", "asset"): Instrument("ANV", "ANV", "asset", False, "A", Decimal(1), 1000, None, True)}
+        summary = build_summary(DAY, ticks_of("ANV", [10, 12], "asset"), metas, None)
+        self.assertEqual(summary["biggest_riser"]["code"], "ANV")
+
     def test_empate_na_capitalizacao_desempata_por_codigo(self):
         snap = snapshot_of([("B", "company", False, 100), ("A", "company", False, 100)])
         summary = build_summary(DAY, ticks_of("A", [1, 1]), {}, snap)

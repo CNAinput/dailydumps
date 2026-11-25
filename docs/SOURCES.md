@@ -18,7 +18,7 @@ Este documento regista o que o arquivo lê da base de dados e como o acesso foi 
 |-|-|-|
 | `price_history` | `code`, `asset_type`, `price`, `timestamp`, `guild_id` (ordenação extra por `id`) | text, text (`company` ou `asset`), double precision, timestamptz, bigint |
 | `companies` | `code`, `name`, `current_price`, `shares_total`, `creation_date` | text, text, double precision, integer, timestamptz |
-| `assets` | `code`, `name`, `current_price`, `shares_total`, `is_index`, `owner_company_code`, `creation_date` | text, text, double precision, integer, boolean, text, timestamptz |
+| `assets` | `code`, `name`, `current_price`, `shares_total`, `is_index`, `is_share_class`, `owner_company_code`, `creation_date` | text, text, double precision, integer, boolean, boolean, text, timestamptz |
 | `dividends` | `code`, `asset_type`, `percentage`, `distribution_days`, `next_distribution`, `last_distribution` | text, text, double precision, integer, timestamptz, timestamptz |
 | `server_taxes` | `juros`, `income`, `iva`, `last_changed` | double precision (3), timestamptz |
 | `dividend_payouts` | `code`, `asset_type`, `paid_at`, `percentage`, `pool`, `total_paid`, `total_shares`, `origin`, `payments`, `guild_id` (ordenação extra por `id`) | text, text, timestamptz, double precision, numeric(16,2), numeric(16,2), bigint, text, jsonb, bigint |

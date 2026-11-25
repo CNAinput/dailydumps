@@ -8,7 +8,7 @@ Este documento descreve cada ficheiro do arquivo, os formatos e as regras com qu
 - **Mercado**: aberto todos os dias das 11:00 às 23:00 de Lisboa. Fechado, os preços ficam congelados. Podem aparecer ticks alguns segundos depois das 23:00, e entram no dia a que pertencem.
 - **Instante** (`ts_utc`, `snapshot_at`, `generated_at`): UTC, sempre com o sufixo `Z`. Os ticks têm sempre 6 dígitos de fração (`2026-10-26T11:00:07.170863Z`) e os instantes de execução têm segundos (`2026-10-27T23:17:00Z`). O texto ordena como o tempo.
 - **Números**: os preços são lidos como decimais exatos e escritos tal como estão na base de dados (`64.4`, não `64.40`). No JSON são números e nunca texto.
-- **Tipo de instrumento** (`asset_type`): `company` (empresa) ou `asset` (ativo). Um ativo pertence a uma empresa (`owner_company_code`). Os índices são ativos com `is_index` verdadeiro. O par `(code, asset_type)` identifica um instrumento, porque os códigos de uma empresa e de um ativo podem coincidir. Os códigos podem ter caracteres como `&` (por exemplo `P&P10`).
+- **Tipo de instrumento** (`asset_type`): `company` (empresa) ou `asset` (ativo). Um ativo pertence a uma empresa (`owner_company_code`). Os índices são ativos com `is_index` verdadeiro. As classes de ações são ativos com `is_share_class` verdadeiro, e a sua capitalização conta na empresa. O par `(code, asset_type)` identifica um instrumento, porque os códigos de uma empresa e de um ativo podem coincidir. Os códigos podem ter caracteres como `&` (por exemplo `P&P10`).
 - **Ficheiros**: UTF-8 sem BOM, fim de linha LF, CSV separado por vírgulas com aspas só quando necessário, JSON com indentação de 2 espaços. O `.gitattributes` impede que o Git converta os fins de linha, o que alteraria os `sha256`.
 - **Privacidade**: nunca se exportam identificadores de contas nem de utilizadores. O comando `verify` rejeita chaves cujo nome sugira contas, utilizadores ou Discord. A única exceção são os nomes públicos dos beneficiários de dividendos (ver [dividend_payouts](#dividend_payoutsaaaa-mm-ddjson)), que nunca são identificadores.
 - **Moeda**: coins (¢), da economia virtual da CNA.
@@ -66,7 +66,7 @@ Estado do mercado no fecho. Só existe em execuções diárias reais feitas com 
 | `schema_version`, `date`, `snapshot_at` | versão do esquema, dia e instante do instantâneo |
 | `instruments[]` | um objeto por instrumento, ordenado por `code` e `asset_type` |
 
-Cada instrumento tem `code`, `name`, `asset_type`, `is_index`, `owner_company_code` (`null` nas empresas), `price` (o preço atual no fecho), `shares_total` (shares autorizadas), `shares_in_circulation` (shares detidas, a soma das posições de todas as contas) e `market_cap`.
+Cada instrumento tem `code`, `name`, `asset_type`, `is_index`, `is_share_class` (ausente nos instantâneos anteriores às classes de ações), `owner_company_code` (`null` nas empresas), `price` (o preço atual no fecho), `shares_total` (shares autorizadas), `shares_in_circulation` (shares detidas, a soma das posições de todas as contas) e `market_cap`.
 
 A **capitalização** é `price` vezes `shares_in_circulation`, arredondada a 2 casas, e nunca `price` vezes `shares_total`. As shares autorizadas e ainda não detidas não valem nada no mercado. Para os índices, `market_cap` é o valor das unidades do índice detidas por investidores e não entra em nenhum total de mercado.
 
@@ -89,7 +89,7 @@ Resumo do fecho do dia, com as mesmas regras do resumo "Fecho do Mercado" que o 
 | `biggest_faller` | maior descida do dia, ou `null` |
 | `calm_day` | `true` se não houve nem subida nem descida relevante |
 | `top_market_cap` | as 3 maiores empresas por capitalização, ou `null` |
-| `total_market_cap` | capitalização total das empresas, ou `null` |
+| `total_market_cap` | capitalização total das empresas, com as classes, ou `null` |
 | `companies_count` | número de empresas no instantâneo, ou `null` |
 
 Regras escolhidas:
@@ -98,7 +98,8 @@ Regras escolhidas:
 - `change_pct` é `(close - open) / open * 100`, arredondado a 2 casas (metade para cima), face ao **primeiro tick do dia**.
 - A maior subida e a maior descida consideram empresas e ativos que não são índices e que têm ticks nesse dia. Cada uma traz `code`, `asset_type`, `name`, `open`, `close` e `change_pct`.
 - Só há `biggest_riser` se a melhor variação for superior a +0,05 % e só há `biggest_faller` se a pior for inferior a -0,05 %. A descida nunca repete o instrumento da subida. Em caso de empate ganha o menor `code` (e depois o menor `asset_type`).
-- `top_market_cap` lista (`rank`, `code`, `name`, `market_cap`) as 3 empresas (`company`) com maior capitalização positiva, com desempate pelo `code`. `total_market_cap` é a soma das capitalizações de todas as empresas (as de capitalização zero incluídas) e `companies_count` o seu número. Ativos e índices não entram.
+- A capitalização de uma empresa é a das suas ações mais a das suas classes de ações (a soma dos `market_cap` do instantâneo). Aplica-se aos instantâneos que têm o campo `is_share_class`; os resumos anteriores contam só as ações das empresas, como o bot fazia.
+- `top_market_cap` lista (`rank`, `code`, `name`, `market_cap`) as 3 empresas (`company`) com maior capitalização positiva, com desempate pelo `code`. `total_market_cap` é a soma das capitalizações de todas as empresas (as de capitalização zero incluídas) e `companies_count` o seu número. As classes só entram através da sua empresa. Os restantes ativos e os índices não entram.
 - Os campos de capitalização só existem quando há snapshot desse dia. Em backfill ficam `null` e `market_cap_available` é `false`.
 - Um instrumento sem metadados atuais (por exemplo retirado de cotação) é tratado como instrumento normal e o seu `name` é `null`.
 

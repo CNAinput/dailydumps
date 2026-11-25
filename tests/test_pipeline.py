@@ -373,7 +373,7 @@ class DailyFilesTests(StandardWorldCase):
         newte = by_code["NEWTE"]
         self.assertEqual(
             set(newte),
-            {"code", "name", "asset_type", "is_index", "owner_company_code", "price", "shares_total",
+            {"code", "name", "asset_type", "is_index", "is_share_class", "owner_company_code", "price", "shares_total",
              "shares_in_circulation", "market_cap"},
         )
         self.assertEqual(newte["shares_in_circulation"], 147299)
@@ -431,6 +431,25 @@ class DailyFilesTests(StandardWorldCase):
         self.assertEqual([t["rank"] for t in summary["top_market_cap"]], [1, 2, 3])
         self.assertEqual(summary["companies_count"], 3)
         self.assertEqual({i["code"] for i in summary["indices"]}, {"P&P10", "PPA10"})
+
+    def test_resumo_soma_as_classes_lidas_da_base(self):
+        # A classe deixa de ser um ativo qualquer.
+        for asset in self.world.assets:
+            if asset["code"] == "ACSCP":
+                asset.update(is_share_class=True, owner_company_code="ACHIP")
+        self.generator(NOW).run_day()
+        files = self.tree()
+        items = {i["code"]: i for i in json.loads(files["snapshots/2026-10-27.json"])["instruments"]}
+        self.assertTrue(items["ACSCP"]["is_share_class"])
+        self.assertFalse(items["ACHIP"]["is_share_class"])
+        summary = json.loads(files["summary/2026-10-27.json"])
+        caps = {t["code"]: Decimal(str(t["market_cap"])) for t in summary["top_market_cap"]}
+        expected = Decimal(str(items["ACHIP"]["market_cap"])) + Decimal(str(items["ACSCP"]["market_cap"]))
+        self.assertEqual(caps["ACHIP"], expected)
+        companies = [i for i in items.values() if i["asset_type"] == "company"]
+        total = sum((Decimal(str(i["market_cap"])) for i in companies + [items["ACSCP"]]), Decimal(0))
+        self.assertEqual(Decimal(str(summary["total_market_cap"])), total)
+        self.assertEqual(summary["companies_count"], 3)
 
 
 class ReadOnlyTests(StandardWorldCase):

@@ -17,6 +17,7 @@ def build_snapshot(day, snapshot_at, instruments, held):
             "name": inst.name,
             "asset_type": inst.asset_type,
             "is_index": inst.is_index,
+            "is_share_class": inst.is_share_class,
             "owner_company_code": inst.owner_company_code,
             "price": inst.price,
             "shares_total": inst.shares_total,

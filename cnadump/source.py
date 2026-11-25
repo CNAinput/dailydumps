@@ -8,7 +8,7 @@ from .timeutil import format_utc, format_utc_seconds, lisbon_date, parse_timesta
 
 PRICE_COLUMNS = "code,asset_type,price,timestamp,guild_id"
 COMPANY_COLUMNS = "code,name,current_price,shares_total,creation_date"
-ASSET_COLUMNS = "code,name,current_price,shares_total,is_index,owner_company_code,creation_date"
+ASSET_COLUMNS = "code,name,current_price,shares_total,is_index,is_share_class,owner_company_code,creation_date"
 DIVIDEND_COLUMNS = "code,asset_type,percentage,distribution_days,next_distribution,last_distribution"
 TAX_COLUMNS = "juros,income,iva,last_changed"
 PAYOUT_COLUMNS = "code,asset_type,paid_at,percentage,pool,total_paid,total_shares,origin,payments,guild_id"
@@ -29,6 +29,7 @@ def _instrument(row, asset_type):
             price=price,
             shares_total=int(row["shares_total"]),
             created_on=lisbon_date(parse_timestamp(created)) if created else None,
+            is_share_class=bool(row.get("is_share_class", False)),
         )
     except (KeyError, ValueError, TypeError) as exc:
         raise ValidationError(f"Instrumento ilegível em {asset_type}: {exc}") from exc
