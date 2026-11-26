@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-25",
+  "market_cap_available": true,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 134.3,
+      "close": 130.38,
+      "change_pct": -2.92
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 491.28,
+      "close": 525.33,
+      "change_pct": 6.93
+    }
+  ],
+  "biggest_riser": {
+    "code": "ACFFC",
+    "asset_type": "asset",
+    "name": "FIFA/EAFC",
+    "open": 0.4,
+    "close": 0.44,
+    "change_pct": 10
+  },
+  "biggest_faller": {
+    "code": "STMEP",
+    "asset_type": "company",
+    "name": "SurvivalTM,E.P.",
+    "open": 0.84,
+    "close": 0.75,
+    "change_pct": -10.71
+  },
+  "calm_day": false,
+  "top_market_cap": [
+    {
+      "rank": 1,
+      "code": "NEWTE",
+      "name": "NovaTecnologia,S.A.",
+      "market_cap": 3600522.6
+    },
+    {
+      "rank": 2,
+      "code": "2020T",
+      "name": "2020investimentos",
+      "market_cap": 1820932.12
+    },
+    {
+      "rank": 3,
+      "code": "P&PEP",
+      "name": "Padrões&Pobres,E.P.",
+      "market_cap": 1412079.13
+    }
+  ],
+  "total_market_cap": 7499501.68,
+  "companies_count": 6
+}
