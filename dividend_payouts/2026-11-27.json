@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-27",
+  "payouts": [
+    {
+      "code": "ACHIP",
+      "asset_type": "company",
+      "paid_at": "2026-11-27T23:00:39Z",
+      "percentage": 30,
+      "pool": 57997.01,
+      "total_paid": 57997.01,
+      "beneficiaries": 6,
+      "average": 9666.17,
+      "total_shares": 42807,
+      "origin": "bot",
+      "payments": [
+        {
+          "beneficiary": "Chip_12",
+          "kind": "pessoal",
+          "shares": 20517,
+          "amount": 27797.43
+        },
+        {
+          "beneficiary": "2020T",
+          "kind": "empresa",
+          "shares": 17801,
+          "amount": 24117.66
+        },
+        {
+          "beneficiary": "ssslav7",
+          "kind": "pessoal",
+          "shares": 1943,
+          "amount": 2632.47
+        },
+        {
+          "beneficiary": "GamerA21",
+          "kind": "pessoal",
+          "shares": 1410,
+          "amount": 1910.34
+        },
+        {
+          "beneficiary": "batata.j22",
+          "kind": "pessoal",
+          "shares": 712,
+          "amount": 964.65
+        },
+        {
+          "beneficiary": "Rodezz",
+          "kind": "pessoal",
+          "shares": 424,
+          "amount": 574.46
+        }
+      ]
+    }
+  ]
+}

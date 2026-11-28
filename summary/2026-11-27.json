@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-27",
+  "market_cap_available": true,
+  "indices": [
+    {
+      "code": "P&P10",
+      "name": "Índice P&P10",
+      "open": 134.6,
+      "close": 124.6,
+      "change_pct": -7.43
+    },
+    {
+      "code": "PPA10",
+      "name": "Índice P&P Ativos 10",
+      "open": 483.03,
+      "close": 460.12,
+      "change_pct": -4.74
+    }
+  ],
+  "biggest_riser": {
+    "code": "ACFFC",
+    "asset_type": "asset",
+    "name": "FIFA/EAFC",
+    "open": 0.38,
+    "close": 0.42,
+    "change_pct": 10.53
+  },
+  "biggest_faller": {
+    "code": "ACSLB",
+    "asset_type": "asset",
+    "name": "Benfica",
+    "open": 1.96,
+    "close": 1.68,
+    "change_pct": -14.29
+  },
+  "calm_day": false,
+  "top_market_cap": [
+    {
+      "rank": 1,
+      "code": "NEWTE",
+      "name": "NovaTecnologia,S.A.",
+      "market_cap": 3632466.4
+    },
+    {
+      "rank": 2,
+      "code": "2020T",
+      "name": "2020investimentos",
+      "market_cap": 1629495.49
+    },
+    {
+      "rank": 3,
+      "code": "P&PEP",
+      "name": "Padrões&Pobres,E.P.",
+      "market_cap": 1313703.45
+    }
+  ],
+  "total_market_cap": 7167342.08,
+  "companies_count": 6
+}
